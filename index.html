@@ -15,6 +15,8 @@
 </head>
 <body>
 
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+
 <nav class="nav">
   <div class="container nav-inner">
     <div class="nav-left">
@@ -22,9 +24,9 @@
       <a href="#" class="nav-logo">amrsamir.me</a>
     </div>
     <ul class="nav-links" id="nav-links">
-      <li><a href="#about" class="nav-link">~/about</a></li>
-      <li><a href="#projects" class="nav-link">~/projects</a></li>
-      <li><a href="#contact" class="nav-link">~/contact</a></li>
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#projects" class="nav-link">Projects</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
     </ul>
     <button class="mobile-toggle" id="nav-toggle">[ menu ]</button>
   </div>
@@ -54,7 +56,11 @@
 </pre>
         </div>
 
-        <h1 class="hero-subtitle">Amr Samir Edris<br><span class="text-secondary">Senior Project Manager</span></h1>
+        <h1 class="hero-subtitle">Amr Samir Edris</h1>
+        
+        <div class="role-rotator" id="role-rotator">
+          <span class="role-text in" id="role-text">Senior Project Manager</span>
+        </div>
         
         <p class="hero-desc">
           Delivering mega events and large-scale productions across the UAE and MENA region. COP28, Expo 2020, F1 Abu Dhabi GP.
@@ -62,10 +68,10 @@
 
         <div class="hero-actions">
           <a href="#contact" class="cmd-btn">
-            <span class="prompt">$</span> ./contact.sh<span class="cursor"></span>
+            Get in Touch
           </a>
-          <a href="#projects" class="cmd-btn" style="background:transparent; border-color:transparent;">
-            <span class="prompt">></span> cat projects.txt
+          <a href="#projects" class="cmd-btn" style="background:transparent; border-color:transparent; text-decoration: underline;">
+            View Projects
           </a>
         </div>
       </div>
@@ -73,7 +79,7 @@
   </section>
 
   <section class="section" id="about">
-    <h2 class="section-title">about.md</h2>
+    <h2 class="section-title">About Me</h2>
     <div class="about-grid">
       <div class="about-text">
         <p>I am a Senior Project Manager with a proven track record of delivering mega events, government productions, and corporate activations across the UAE, Egypt, Kuwait, and the wider MENA region.</p>
@@ -122,7 +128,7 @@
   </section>
 
   <section class="section" id="projects">
-    <h2 class="section-title">projects/active/</h2>
+    <h2 class="section-title">Active Projects</h2>
     <div class="projects-grid">
       
       <article class="project-card">
@@ -153,7 +159,7 @@
   </section>
 
   <section class="section" id="stats">
-    <h2 class="section-title">stats.json</h2>
+    <h2 class="section-title">Experience & Stats</h2>
     <div class="stats-grid">
       <div class="stat-item">
         <span class="stat-number">5+</span>
@@ -179,7 +185,7 @@
   </section>
 
   <section class="section" id="contact" style="border-bottom:none;">
-    <h2 class="section-title">contact.sh</h2>
+    <h2 class="section-title">Contact</h2>
     
     <div class="contact-grid">
       <div class="contact-links">
@@ -221,7 +227,7 @@
             <textarea id="message" name="message" required data-fs-field></textarea>
             <span data-fs-error="message"></span>
           </div>
-          <button type="submit" class="form-submit" id="submit-btn" data-fs-submit-btn>Execute</button>
+          <button type="submit" class="form-submit" id="submit-btn" data-fs-submit-btn>Send Message</button>
         </form>
       </div>
     </div>

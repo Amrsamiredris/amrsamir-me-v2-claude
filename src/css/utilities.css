@@ -59,18 +59,9 @@
   font-weight: var(--font-medium);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
   color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.section-title::before {
-  content: '';
-  display: block;
-  width: 20px;
-  height: 1px;
-  background-color: var(--border-active);
+  text-align: center;
 }
 
 /* Command-line style button */

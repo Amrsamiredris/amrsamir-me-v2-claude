@@ -7,22 +7,18 @@
 }
 
 .hero-grid {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 40px;
-}
-
-@media (min-width: 1024px) {
-  .hero-grid {
-    grid-template-columns: auto 1fr;
-    align-items: start;
-    gap: 60px;
-  }
 }
 
 .ascii-container {
   overflow-x: auto;
   padding-bottom: 16px;
+  display: flex;
+  justify-content: center;
 }
 
 .ascii-art {
@@ -32,6 +28,7 @@
   white-space: pre;
   color: var(--text-secondary);
   user-select: none;
+  margin: 0 auto;
 }
 
 @media (min-width: 640px) {
@@ -49,20 +46,52 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 .hero-subtitle {
   font-size: var(--text-xl);
   font-weight: var(--font-medium);
   color: var(--text-primary);
-  margin-bottom: 24px;
-  max-width: 600px;
+  margin-bottom: 16px;
   line-height: 1.4;
+  text-align: center;
 }
 @media (min-width: 640px) {
   .hero-subtitle {
     font-size: var(--text-2xl);
   }
+}
+
+/* Rotating role badge */
+.role-rotator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 0.92rem;
+  font-weight: var(--font-bold, 700);
+  color: var(--bg-primary);
+  background: var(--text-primary);
+  padding: 8px 24px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 24px;
+  overflow: hidden;
+  position: relative;
+  min-width: 220px;
+  height: 42px;
+}
+.role-rotator .role-text {
+  white-space: nowrap;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.role-rotator .role-text.out {
+  opacity: 0;
+  transform: translateY(-14px);
+}
+.role-rotator .role-text.in {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .hero-desc {
@@ -71,10 +100,12 @@
   max-width: 600px;
   margin-bottom: 40px;
   line-height: 1.6;
+  text-align: center;
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 16px;
 }
