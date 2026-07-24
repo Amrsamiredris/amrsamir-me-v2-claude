@@ -50,12 +50,15 @@
 }
 
 .hero-subtitle {
+  font-family: var(--font-mono);
   font-size: var(--text-xl);
-  font-weight: var(--font-medium);
+  font-weight: var(--font-semibold);
   color: var(--text-primary);
   margin-bottom: 16px;
   line-height: 1.4;
   text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 @media (min-width: 640px) {
   .hero-subtitle {
@@ -108,4 +111,28 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 16px;
+  margin-bottom: 24px;
+}
+
+.hero-socials {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+.social-icon:hover {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border-color: var(--text-primary);
 }

@@ -35,6 +35,9 @@
 .cl-label {
   font-size: var(--text-sm);
   color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .cl-value {
   font-size: var(--text-base);
