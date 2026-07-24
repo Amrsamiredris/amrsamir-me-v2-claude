@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { resolve } from 'path';
 
 export default defineConfig({
   root: '.',
@@ -7,7 +8,12 @@ export default defineConfig({
     outDir: 'dist',
     assetsInlineLimit: 0,
     rollupOptions: {
-      input: './index.html',
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        events: resolve(__dirname, 'events/index.html'),
+        marketing: resolve(__dirname, 'marketing/index.html'),
+        ai: resolve(__dirname, 'ai/index.html'),
+      },
     },
   },
   server: {
