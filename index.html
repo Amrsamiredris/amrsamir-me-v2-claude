@@ -27,13 +27,10 @@
     transition: opacity 0.1s ease-out, transform 0.1s ease-out;
   }
   .watermark-bg .ascii-art {
-    font-size: 2vw;
+    font-size: clamp(3px, 1.4vw, 16px);
+    line-height: 1.15;
+    white-space: pre;
     color: var(--text-primary);
-  }
-  @media (min-width: 768px) {
-    .watermark-bg .ascii-art {
-      font-size: 1.5vw;
-    }
   }
 </style>
 
