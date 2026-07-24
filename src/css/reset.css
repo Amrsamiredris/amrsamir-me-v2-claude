@@ -1,0 +1,190 @@
+/* ============================================================
+   RESET — amrsamir.me
+   Modern CSS reset tuned for the design system.
+   ============================================================ */
+
+/* --------------------------------------------------------
+   Box-sizing — all elements
+   -------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------
+   Remove default margins & paddings
+   -------------------------------------------------------- */
+*  {
+  margin: 0;
+  padding: 0;
+}
+
+/* --------------------------------------------------------
+   HTML root
+   -------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* --------------------------------------------------------
+   Body
+   -------------------------------------------------------- */
+body {
+  font-family: var(--font-family);
+  font-size: var(--text-base);
+  font-weight: var(--font-regular);
+  line-height: var(--leading-normal);
+  color: var(--white);
+  background-color: var(--navy-900);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* --------------------------------------------------------
+   Images
+   -------------------------------------------------------- */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+/* --------------------------------------------------------
+   Links
+   -------------------------------------------------------- */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------
+   Buttons
+   -------------------------------------------------------- */
+button {
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+}
+
+/* --------------------------------------------------------
+   Inputs & textareas
+   -------------------------------------------------------- */
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* --------------------------------------------------------
+   Lists
+   -------------------------------------------------------- */
+ul,
+ol {
+  list-style: none;
+}
+
+/* --------------------------------------------------------
+   Typography reset
+   -------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: var(--leading-tight);
+}
+
+p {
+  overflow-wrap: break-word;
+}
+
+/* --------------------------------------------------------
+   Table
+   -------------------------------------------------------- */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* --------------------------------------------------------
+   Focus — keyboard-only ring
+   Only :focus-visible fires (Tab key), not :focus (click).
+   -------------------------------------------------------- */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--blue-500);
+  outline-offset: 3px;
+  border-radius: var(--radius-xs);
+}
+
+/* --------------------------------------------------------
+   Custom scrollbar
+   -------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--navy-900);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--blue-500);
+  border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--blue-600);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--blue-500) var(--navy-900);
+}
+
+/* --------------------------------------------------------
+   Selection
+   -------------------------------------------------------- */
+::selection {
+  background-color: rgba(59, 130, 246, 0.3);
+  color: var(--white);
+}
+
+/* --------------------------------------------------------
+   Reduced motion preference
+   -------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

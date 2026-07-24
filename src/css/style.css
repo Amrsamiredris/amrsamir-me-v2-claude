@@ -1,0 +1,12 @@
+/* ═══════════════════════════════════════════════════════
+   MAIN STYLE AGGREGATOR
+   ═══════════════════════════════════════════════════════ */
+@import './tokens.css';
+@import './reset.css';
+@import './utilities.css';
+
+/* Components */
+@import './nav.css';
+@import './hero.css';
+@import './sections.css';
+@import './contact.css';
