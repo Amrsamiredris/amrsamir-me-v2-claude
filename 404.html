@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Not Found</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <script type="module" src="/src/main.js" defer></script>
+  
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+    .error-code {
+      font-size: 6rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      line-height: 1;
+    }
+    .error-msg {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="error-code reveal">404</div>
+  <p class="error-msg reveal">System.Exception: Resource not found.</p>
+  
+  <div class="reveal">
+    <a href="/" class="cmd-btn">
+      <span class="prompt">$</span>
+      <span>cd /home</span>
+      <span class="cursor"></span>
+    </a>
+  </div>
+
+</body>
+</html>

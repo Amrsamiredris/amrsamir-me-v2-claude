@@ -13,6 +13,7 @@ export default defineConfig({
         events: resolve(__dirname, 'events/index.html'),
         marketing: resolve(__dirname, 'marketing/index.html'),
         ai: resolve(__dirname, 'ai/index.html'),
+        notfound: resolve(__dirname, '404.html'),
       },
     },
   },

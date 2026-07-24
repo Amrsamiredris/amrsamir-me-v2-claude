@@ -3,10 +3,85 @@ import { initNav } from './js/nav.js';
 import { initFormWatcher } from './js/form.js';
 import { inject } from '@vercel/analytics';
 
+function initScrollReveal() {
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  reveals.forEach(el => observer.observe(el));
+}
+
+function initCommandPalette() {
+  const html = `
+    <div class="cmd-palette-backdrop" id="cmd-backdrop">
+      <div class="cmd-palette">
+        <input type="text" class="cmd-input" id="cmd-input" placeholder="Search commands... (e.g. 'contact')" autocomplete="off">
+        <div class="cmd-results" id="cmd-results">
+          <a href="/" class="cmd-item"><span>Home Hub</span><span class="cmd-kbd">↵</span></a>
+          <a href="/events/" class="cmd-item"><span>Events Persona</span><span class="cmd-kbd">↵</span></a>
+          <a href="/marketing/" class="cmd-item"><span>Marketing Persona</span><span class="cmd-kbd">↵</span></a>
+          <a href="/ai/" class="cmd-item"><span>AI & Tech Persona</span><span class="cmd-kbd">↵</span></a>
+          <a href="#newsletter" class="cmd-item"><span>Subscribe Newsletter</span><span class="cmd-kbd">↵</span></a>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('beforeend', html);
+
+  const backdrop = document.getElementById('cmd-backdrop');
+  const input = document.getElementById('cmd-input');
+  const items = document.querySelectorAll('.cmd-item');
+
+  function toggle() {
+    const isVisible = backdrop.classList.contains('visible');
+    if (isVisible) {
+      backdrop.classList.remove('visible');
+      input.blur();
+    } else {
+      backdrop.classList.add('visible');
+      input.value = '';
+      filter('');
+      setTimeout(() => input.focus(), 100);
+    }
+  }
+
+  function filter(query) {
+    query = query.toLowerCase();
+    items.forEach(item => {
+      const text = item.textContent.toLowerCase();
+      item.style.display = text.includes(query) ? 'flex' : 'none';
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      toggle();
+    }
+    if (e.key === 'Escape' && backdrop.classList.contains('visible')) {
+      toggle();
+    }
+  });
+
+  backdrop.addEventListener('click', (e) => {
+    if (e.target === backdrop) toggle();
+  });
+
+  input.addEventListener('input', (e) => filter(e.target.value));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   inject();
   initNav();
   initFormWatcher();
+  initScrollReveal();
+  initCommandPalette();
   initRotator();
   initBgAnimation();
 });

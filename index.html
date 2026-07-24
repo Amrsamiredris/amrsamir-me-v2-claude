@@ -22,8 +22,9 @@
     z-index: -2;
     pointer-events: none;
     user-select: none;
-    opacity: 0.08;
-    transition: opacity 0.1s ease-out;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+    transition: opacity 0.1s ease-out, transform 0.1s ease-out;
   }
   .watermark-bg .ascii-art {
     font-size: 2vw;
@@ -57,7 +58,7 @@
   </div>
 </nav>
 
-<main class="container">
+<main class="container" style="margin-top: 100vh; position: relative; z-index: 10; padding-bottom: 40px;">
   
   <section class="hero" style="border-bottom:none; padding-bottom: 40px;">
     <div class="hero-grid" style="gap: 20px;">
@@ -72,7 +73,7 @@
     <div class="projects-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px;">
       
       <!-- Events Persona -->
-      <article class="project-card" style="text-align: center; display: flex; flex-direction: column; align-items: center; padding: 48px 24px;">
+      <article class="project-card reveal" style="text-align: center; display: flex; flex-direction: column; align-items: center; padding: 48px 24px;">
         <h3 class="project-name" style="font-size: 1.5rem; margin-bottom: 12px;">Events & Project Management</h3>
         <p class="project-desc" style="text-align: center; margin-bottom: 32px;">Mega events, government productions, and corporate activations.</p>
         <a href="/events/" class="cmd-btn" style="text-decoration: none;">
@@ -81,7 +82,7 @@
       </article>
 
       <!-- Marketing Persona -->
-      <article class="project-card" style="text-align: center; display: flex; flex-direction: column; align-items: center; padding: 48px 24px;">
+      <article class="project-card reveal" style="text-align: center; display: flex; flex-direction: column; align-items: center; padding: 48px 24px;">
         <h3 class="project-name" style="font-size: 1.5rem; margin-bottom: 12px;">Marketing</h3>
         <p class="project-desc" style="text-align: center; margin-bottom: 32px;">Brand strategy, digital growth, and creative campaigns.</p>
         <a href="/marketing/" class="cmd-btn" style="text-decoration: none;">
@@ -90,7 +91,7 @@
       </article>
 
       <!-- AI & Tech Persona -->
-      <article class="project-card" style="text-align: center; display: flex; flex-direction: column; align-items: center; padding: 48px 24px;">
+      <article class="project-card reveal" style="text-align: center; display: flex; flex-direction: column; align-items: center; padding: 48px 24px;">
         <h3 class="project-name" style="font-size: 1.5rem; margin-bottom: 12px;">AI & Tech</h3>
         <p class="project-desc" style="text-align: center; margin-bottom: 32px;">AI agents, automation, and tech innovation.</p>
         <a href="/ai/" class="cmd-btn" style="text-decoration: none;">
@@ -125,21 +126,22 @@
     if (!watermark) return;
 
     window.addEventListener('scroll', () => {
-      // Calculate scroll percentage
       const scrollY = window.scrollY;
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercent = maxScroll > 0 ? scrollY / maxScroll : 0;
+      const vh = window.innerHeight;
       
-      // Base opacity: 0.08, Max opacity: 0.30
-      const baseOpacity = 0.08;
-      const maxOpacity = 0.30;
+      // Calculate progress of scroll across the first 100vh
+      let progress = scrollY / vh;
+      if (progress > 1) progress = 1;
       
-      // Calculate current opacity based on scroll
-      const currentOpacity = baseOpacity + (scrollPercent * (maxOpacity - baseOpacity));
+      // Interpolate opacity from 1 down to 0.08
+      const opacity = 1 - (progress * (1 - 0.08));
       
-      // Apply opacity
-      watermark.style.opacity = currentOpacity.toFixed(3);
-    });
+      // Interpolate scale from 1.1 down to 1.0
+      const scale = 1.1 - (progress * 0.1);
+      
+      watermark.style.opacity = opacity.toFixed(3);
+      watermark.style.transform = `translate(-50%, -50%) scale(${scale.toFixed(3)})`;
+    }, { passive: true });
   });
 </script>
 
