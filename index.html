@@ -22,7 +22,8 @@
     z-index: -2;
     pointer-events: none;
     user-select: none;
-    opacity: 0.04;
+    opacity: 0.08;
+    transition: opacity 0.1s ease-out;
   }
   .watermark-bg .ascii-art {
     font-size: 2vw;
@@ -127,6 +128,30 @@
     <p class="footer-copy">&copy; 2026 Amr Samir Edris</p>
   </div>
 </footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const watermark = document.querySelector('.watermark-bg');
+    if (!watermark) return;
+
+    window.addEventListener('scroll', () => {
+      // Calculate scroll percentage
+      const scrollY = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = maxScroll > 0 ? scrollY / maxScroll : 0;
+      
+      // Base opacity: 0.08, Max opacity: 0.30
+      const baseOpacity = 0.08;
+      const maxOpacity = 0.30;
+      
+      // Calculate current opacity based on scroll
+      const currentOpacity = baseOpacity + (scrollPercent * (maxOpacity - baseOpacity));
+      
+      // Apply opacity
+      watermark.style.opacity = currentOpacity.toFixed(3);
+    });
+  });
+</script>
 
 </body>
 </html>
