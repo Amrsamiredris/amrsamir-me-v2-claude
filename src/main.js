@@ -71,7 +71,26 @@ function initBgAnimation() {
     });
   }
 
+  let isVisible = true;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      isVisible = entry.isIntersecting;
+    });
+  }, { threshold: 0 });
+  
+  // Observe the body or main element to determine if canvas is needed
+  // Since it's fixed, we can just let it run unless we want to pause it entirely.
+  // Actually, to save battery on mobile, we can throttle the frame rate or pause when not actively scrolling, but a better way is to pause it if they scroll past the hero. 
+  // Let's observe the #hero section if it exists, otherwise just observe the top of the body.
+  const hero = document.getElementById('hero') || document.body;
+  observer.observe(hero);
+
   function draw() {
+    if (!isVisible) {
+      requestAnimationFrame(draw);
+      return;
+    }
     ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = 'rgba(255,255,255,0.1)';
     dots.forEach(d => {
