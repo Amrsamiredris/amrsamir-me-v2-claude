@@ -22,7 +22,7 @@
     z-index: -2;
     pointer-events: none;
     user-select: none;
-    opacity: 0.08;
+    opacity: 0.02;
     transition: opacity 0.1s ease-out;
   }
   .watermark-bg .ascii-art {
@@ -130,9 +130,9 @@
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = maxScroll > 0 ? scrollY / maxScroll : 0;
       
-      // Base opacity: 0.08, Max opacity: 0.30
-      const baseOpacity = 0.08;
-      const maxOpacity = 0.30;
+      // Base opacity: 0.02, Max opacity: 0.12
+      const baseOpacity = 0.02;
+      const maxOpacity = 0.12;
       
       // Calculate current opacity based on scroll
       const currentOpacity = baseOpacity + (scrollPercent * (maxOpacity - baseOpacity));

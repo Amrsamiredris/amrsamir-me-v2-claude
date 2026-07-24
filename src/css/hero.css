@@ -23,7 +23,7 @@
 
 .ascii-art {
   font-family: var(--font-mono);
-  font-size: 10px; /* Small size to fit */
+  font-size: clamp(3px, 1.3vw, 12px); 
   line-height: 1.15;
   white-space: pre;
   color: var(--text-secondary);
@@ -31,14 +31,9 @@
   margin: 0 auto;
 }
 
-@media (min-width: 640px) {
-  .ascii-art {
-    font-size: 12px;
-  }
-}
 @media (min-width: 1024px) {
   .ascii-art {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 
