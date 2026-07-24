@@ -1,8 +1,10 @@
 import './css/style.css';
 import { initNav } from './js/nav.js';
 import { initFormWatcher } from './js/form.js';
+import { inject } from '@vercel/analytics';
 
 document.addEventListener('DOMContentLoaded', () => {
+  inject();
   initNav();
   initFormWatcher();
   initRotator();
