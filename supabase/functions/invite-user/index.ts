@@ -12,8 +12,8 @@ serve(async (req) => {
     
     // Create a Supabase client with the SERVICE_ROLE_KEY to bypass RLS and invite users
     const supabaseAdmin = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+      Deno.env.get('ADMIN_URL') ?? '',
+      Deno.env.get('ADMIN_SERVICE_ROLE_KEY') ?? ''
     )
 
     // Invite the user via email

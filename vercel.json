@@ -29,6 +29,26 @@
         }
       ],
       "destination": "/ai/$1"
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "admin.amrsamir.me"
+        }
+      ],
+      "destination": "/admin/$1"
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "cv.amrsamir.me"
+        }
+      ],
+      "destination": "/cv/$1"
     }
   ],
   "headers": [
