@@ -25,8 +25,21 @@ const inboxLoader = document.getElementById('inbox-loader');
 const inboxEmpty = document.getElementById('inbox-empty');
 const refreshInboxBtn = document.getElementById('refresh-inbox');
 
+// Theme & Analytics Elements
+const themeToggleBtn = document.getElementById('theme-toggle');
+const overviewInboxCount = document.getElementById('overview-inbox-count');
+const analyticsUrlInput = document.getElementById('set-analytics-url');
+const saveAnalyticsBtn = document.getElementById('save-analytics-btn');
+const analyticsIframe = document.getElementById('analytics-iframe');
+const noAnalyticsMsg = document.getElementById('no-analytics-msg');
+
 // Initialization
 async function init() {
+  // Check theme
+  const savedTheme = localStorage.getItem('adminTheme');
+  if (savedTheme === 'classic-black') {
+    document.body.setAttribute('data-theme', 'classic-black');
+  }
   const { data: { session } } = await supabase.auth.getSession();
   
   if (session) {
@@ -111,8 +124,41 @@ async function loadSettings() {
     if (data.email) document.getElementById('set-email').value = data.email;
     if (data.linkedin) document.getElementById('set-linkedin').value = data.linkedin;
     if (data.substack) document.getElementById('set-substack').value = data.substack;
+    if (data.analytics_url) {
+      analyticsUrlInput.value = data.analytics_url;
+      updateAnalyticsIframe(data.analytics_url);
+    }
   }
 }
+
+function updateAnalyticsIframe(url) {
+  if (url && url.startsWith('http')) {
+    analyticsIframe.src = url;
+    analyticsIframe.style.display = 'block';
+    noAnalyticsMsg.style.display = 'none';
+  } else {
+    analyticsIframe.style.display = 'none';
+    noAnalyticsMsg.style.display = 'block';
+  }
+}
+
+saveAnalyticsBtn.addEventListener('click', async () => {
+  const url = analyticsUrlInput.value;
+  saveAnalyticsBtn.textContent = 'Saving...';
+  
+  const { data: existingData } = await supabase.from('settings').select('id').limit(1).single();
+  let result;
+  if (existingData) {
+    result = await supabase.from('settings').update({ analytics_url: url }).eq('id', existingData.id);
+  } else {
+    result = await supabase.from('settings').insert([{ analytics_url: url }]);
+  }
+  
+  saveAnalyticsBtn.textContent = 'Save';
+  if (!result.error) {
+    updateAnalyticsIframe(url);
+  }
+});
 
 // Save Settings
 settingsForm.addEventListener('submit', async (e) => {
@@ -169,10 +215,12 @@ async function loadInbox() {
 
   if (error || !data || data.length === 0) {
     inboxEmpty.classList.remove('hidden');
+    overviewInboxCount.textContent = '0';
     return;
   }
 
   inboxList.classList.remove('hidden');
+  overviewInboxCount.textContent = data.length.toString();
   
   data.forEach(msg => {
     const li = document.createElement('li');
@@ -213,6 +261,18 @@ function escapeHTML(str) {
     }[tag])
   );
 }
+
+// Theme Toggle
+themeToggleBtn.addEventListener('click', () => {
+  const currentTheme = document.body.getAttribute('data-theme');
+  if (currentTheme === 'classic-black') {
+    document.body.removeAttribute('data-theme');
+    localStorage.removeItem('adminTheme');
+  } else {
+    document.body.setAttribute('data-theme', 'classic-black');
+    localStorage.setItem('adminTheme', 'classic-black');
+  }
+});
 
 // Start
 init();
