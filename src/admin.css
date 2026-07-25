@@ -510,13 +510,19 @@ body {
   color: #10b981;
 }
 
-/* Classic Black Theme Overrides */
+/* Classic Black Theme Overrides (Matches Main Site exactly) */
 body[data-theme="classic-black"] {
   --bg-primary: #000000;
   --bg-secondary: #0a0a0a;
+  --bg-tertiary: #111111;
   --glass-bg: #111111;
-  --glass-border: #333333;
+  --glass-border: #222222;
   --border-color: #333333;
+  --text-main: #ededed;
+  --text-muted: #888888;
+  --accent: #ededed;
+  --accent-hover: #ffffff;
+  font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 body[data-theme="classic-black"] .bg-shape {
@@ -527,18 +533,36 @@ body[data-theme="classic-black"] .glass-container,
 body[data-theme="classic-black"] .glass-panel {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  background: var(--glass-bg);
-  border-radius: 8px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
   box-shadow: none;
 }
 
 body[data-theme="classic-black"] .input-group input {
-  background: #000000;
-  border-radius: 6px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-main);
+  font-family: inherit;
 }
 
 body[data-theme="classic-black"] .btn {
-  border-radius: 6px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-weight: 500;
+}
+
+body[data-theme="classic-black"] .primary-btn {
+  background: var(--text-main);
+  color: var(--bg-primary);
+  box-shadow: none;
+}
+
+body[data-theme="classic-black"] .primary-btn:hover {
+  background: #ffffff;
+  transform: none;
+  box-shadow: none;
 }
 
 body[data-theme="classic-black"] .sidebar-theme {
