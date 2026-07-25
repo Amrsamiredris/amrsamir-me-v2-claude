@@ -15,6 +15,7 @@ export default defineConfig({
         ai: resolve(__dirname, 'ai/index.html'),
         notfound: resolve(__dirname, '404.html'),
         admin: resolve(__dirname, 'admin/index.html'),
+        cv: resolve(__dirname, 'cv/index.html'),
       },
     },
   },
