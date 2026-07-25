@@ -33,6 +33,23 @@ const saveAnalyticsBtn = document.getElementById('save-analytics-btn');
 const analyticsIframe = document.getElementById('analytics-iframe');
 const noAnalyticsMsg = document.getElementById('no-analytics-msg');
 
+// CV Tracker Elements
+const cvCompanyInput = document.getElementById('cv-company');
+const generateCvBtn = document.getElementById('generate-cv-link-btn');
+const cvLinkResult = document.getElementById('cv-link-result');
+const cvGeneratedUrl = document.getElementById('cv-generated-url');
+const refreshCvStatsBtn = document.getElementById('refresh-cv-stats');
+const cvStatsBody = document.getElementById('cv-stats-body');
+
+// User Management Elements
+const inviteForm = document.getElementById('invite-form');
+const inviteEmailInput = document.getElementById('invite-email');
+const inviteRoleSelect = document.getElementById('invite-role');
+const inviteLoader = document.getElementById('invite-loader');
+const inviteMsg = document.getElementById('invite-msg');
+const sendInviteBtn = document.getElementById('send-invite-btn');
+const usersRolesBody = document.getElementById('users-roles-body');
+
 // Initialization
 async function init() {
   // Check theme
@@ -98,6 +115,8 @@ function showDashboard(user) {
   // Load initial data
   loadSettings();
   loadInbox();
+  loadCvStats();
+  loadUsersRoles();
 }
 
 // Navigation
@@ -261,6 +280,110 @@ function escapeHTML(str) {
     }[tag])
   );
 }
+
+// CV Tracker Logic
+generateCvBtn.addEventListener('click', () => {
+  const company = cvCompanyInput.value.trim();
+  if (!company) {
+    alert('Please enter a company name first.');
+    return;
+  }
+  const baseUrl = window.location.origin;
+  const link = `${baseUrl}/cv/?ref=${encodeURIComponent(company)}`;
+  cvGeneratedUrl.textContent = link;
+  cvLinkResult.style.display = 'block';
+});
+
+async function loadCvStats() {
+  cvStatsBody.innerHTML = '<tr><td colspan="3" style="padding: 20px; text-align: center; color: var(--text-muted);">Loading stats...</td></tr>';
+  
+  const { data, error } = await supabase
+    .from('cv_events')
+    .select('*')
+    .order('created_at', { ascending: false });
+    
+  if (error || !data || data.length === 0) {
+    cvStatsBody.innerHTML = '<tr><td colspan="3" style="padding: 20px; text-align: center; color: var(--text-muted);">No CV tracking data found yet.</td></tr>';
+    return;
+  }
+  
+  cvStatsBody.innerHTML = '';
+  data.forEach(event => {
+    const tr = document.createElement('tr');
+    tr.style.borderBottom = '1px solid var(--border-color)';
+    
+    const date = new Date(event.created_at).toLocaleString('en-US', {
+      month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+    
+    const badgeColor = event.event_type === 'download' ? '#10b981' : '#3b82f6';
+    const badge = `<span style="background: ${badgeColor}33; color: ${badgeColor}; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; text-transform: uppercase;">${event.event_type}</span>`;
+    
+    tr.innerHTML = `
+      <td style="padding: 12px 8px; font-weight: 500;">${escapeHTML(event.company_name)}</td>
+      <td style="padding: 12px 8px;">${badge}</td>
+      <td style="padding: 12px 8px; color: var(--text-muted); font-size: 14px;">${date}</td>
+    `;
+    cvStatsBody.appendChild(tr);
+  });
+}
+
+refreshCvStatsBtn.addEventListener('click', loadCvStats);
+
+// User Management Logic
+async function loadUsersRoles() {
+  usersRolesBody.innerHTML = '<tr><td colspan="2" style="padding: 20px; text-align: center; color: var(--text-muted);">Loading roles...</td></tr>';
+  
+  const { data, error } = await supabase.from('user_roles').select('*').order('created_at', { ascending: false });
+    
+  if (error || !data || data.length === 0) {
+    usersRolesBody.innerHTML = '<tr><td colspan="2" style="padding: 20px; text-align: center; color: var(--text-muted);">No active roles found.</td></tr>';
+    return;
+  }
+  
+  usersRolesBody.innerHTML = '';
+  data.forEach(user => {
+    const tr = document.createElement('tr');
+    tr.style.borderBottom = '1px solid var(--border-color)';
+    tr.innerHTML = `
+      <td style="padding: 12px 8px; font-weight: 500;">
+        ${escapeHTML(user.email)}<br>
+        <span style="font-size:12px; color:var(--text-muted); font-weight:400;">${user.user_id}</span>
+      </td>
+      <td style="padding: 12px 8px;">
+        <span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 13px;">${escapeHTML(user.role)}</span>
+      </td>
+    `;
+    usersRolesBody.appendChild(tr);
+  });
+}
+
+inviteForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  sendInviteBtn.querySelector('span').classList.add('hidden');
+  inviteLoader.classList.remove('hidden');
+  inviteMsg.innerHTML = '';
+  
+  const email = inviteEmailInput.value.trim();
+  const role = inviteRoleSelect.value;
+  
+  // Call Supabase Edge Function to securely invite the user
+  const { data, error } = await supabase.functions.invoke('invite-user', {
+    body: { email, role }
+  });
+  
+  sendInviteBtn.querySelector('span').classList.remove('hidden');
+  inviteLoader.classList.add('hidden');
+  
+  if (error || (data && data.error)) {
+    inviteMsg.innerHTML = `<span class="error-msg" style="background:transparent;padding:0;">Error: ${error?.message || data?.error}</span>`;
+  } else {
+    inviteMsg.innerHTML = `<span class="success-msg">Invitation sent successfully!</span>`;
+    inviteForm.reset();
+    loadUsersRoles();
+    setTimeout(() => { inviteMsg.innerHTML = ''; }, 3000);
+  }
+});
 
 // Theme Toggle
 themeToggleBtn.addEventListener('click', () => {
