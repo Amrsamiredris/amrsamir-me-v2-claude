@@ -2,6 +2,49 @@ import './css/style.css';
 import { initNav } from './js/nav.js';
 import { initFormWatcher } from './js/form.js';
 import { inject } from '@vercel/analytics';
+import { supabase } from './supabaseClient.js';
+import posthog from 'posthog-js';
+
+// Correct version:
+posthog.init(import.meta.env.VITE_POSTHOG_KEY, {
+    api_host: 'https://us.i.posthog.com',
+    person_profiles: 'identified_only',
+});
+
+async function initDynamicSettings() {
+  try {
+    const { data, error } = await supabase.from('settings').select('*').limit(1).single();
+    if (data) {
+      if (data.whatsapp) {
+        document.querySelectorAll('a[href^="https://wa.me/"]').forEach(el => {
+          el.href = `https://wa.me/${data.whatsapp.replace(/[^0-9]/g, '')}`;
+        });
+      }
+      if (data.email) {
+        document.querySelectorAll('a[href^="mailto:"]').forEach(el => {
+          el.href = `mailto:${data.email}`;
+          // If the link text is an email, update it
+          if (el.textContent.includes('@')) {
+            el.textContent = data.email;
+          }
+        });
+      }
+      if (data.linkedin) {
+        document.querySelectorAll('a[href*="linkedin.com/in/"]').forEach(el => {
+          el.href = data.linkedin;
+        });
+      }
+      if (data.substack) {
+        document.querySelectorAll('iframe[src*="substack.com/embed"]').forEach(el => {
+          // Keep embed params if needed
+          el.src = data.substack + '/embed?transparent=1&light=1';
+        });
+      }
+    }
+  } catch (err) {
+    console.error("Could not fetch settings", err);
+  }
+}
 
 function initScrollReveal() {
   const reveals = document.querySelectorAll('.reveal');
@@ -78,6 +121,7 @@ function initCommandPalette() {
 
 document.addEventListener('DOMContentLoaded', () => {
   inject();
+  initDynamicSettings();
   initNav();
   initFormWatcher();
   initScrollReveal();

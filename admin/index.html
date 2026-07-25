@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Control Panel | amrsamir.me</title>
+    <!-- Modern Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/admin.css" />
+  </head>
+  <body>
+    <!-- Abstract Background -->
+    <div class="bg-shape shape1"></div>
+    <div class="bg-shape shape2"></div>
+    <div class="bg-shape shape3"></div>
+
+    <div id="app">
+      <!-- Login Section (Visible by default) -->
+      <div id="login-section" class="glass-container auth-box">
+        <div class="logo">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <h2>Control Panel</h2>
+        <p class="subtitle">Secure access required</p>
+        
+        <form id="login-form">
+          <div class="input-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" required placeholder="you@amrsamir.me" />
+          </div>
+          <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" required placeholder="••••••••" />
+          </div>
+          <div id="login-error" class="error-msg hidden"></div>
+          <button type="submit" class="btn primary-btn" id="login-btn">
+            <span>Sign In</span>
+            <div class="loader hidden" id="login-loader"></div>
+          </button>
+        </form>
+      </div>
+
+      <!-- Dashboard Section (Hidden by default) -->
+      <div id="dashboard-section" class="dashboard-layout hidden">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar glass-panel">
+          <div class="sidebar-header">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            <h3>Admin Panel</h3>
+          </div>
+          
+          <nav class="sidebar-nav">
+            <button class="nav-item active" data-target="settings-view">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+              Global Settings
+            </button>
+            <button class="nav-item" data-target="inbox-view">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              Form Submissions
+            </button>
+          </nav>
+          
+          <div class="sidebar-footer">
+            <div class="user-info">
+              <div class="avatar">A</div>
+              <span id="user-email">admin@amrsamir.me</span>
+            </div>
+            <button id="logout-btn" class="btn text-btn">Sign Out</button>
+          </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+          
+          <!-- View: Settings -->
+          <div id="settings-view" class="view-panel active">
+            <header class="view-header">
+              <h2>Global Settings</h2>
+              <p>Update your contact links. Changes are reflected live on the website.</p>
+            </header>
+            
+            <div class="glass-panel form-card">
+              <form id="settings-form">
+                
+                <div class="input-group">
+                  <label for="set-whatsapp">WhatsApp Number</label>
+                  <input type="text" id="set-whatsapp" placeholder="e.g. +971501234567" />
+                </div>
+                
+                <div class="input-group">
+                  <label for="set-email">Public Email Address</label>
+                  <input type="email" id="set-email" placeholder="contact@amrsamir.me" />
+                </div>
+                
+                <div class="input-group">
+                  <label for="set-linkedin">LinkedIn Profile URL</label>
+                  <input type="url" id="set-linkedin" placeholder="https://linkedin.com/in/..." />
+                </div>
+
+                <div class="input-group">
+                  <label for="set-substack">Substack URL</label>
+                  <input type="url" id="set-substack" placeholder="https://your.substack.com" />
+                </div>
+
+                <div class="form-actions">
+                  <div id="settings-msg" class="msg-box"></div>
+                  <button type="submit" class="btn primary-btn" id="save-settings-btn">
+                    <span>Save Changes</span>
+                    <div class="loader hidden" id="settings-loader"></div>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- View: Inbox -->
+          <div id="inbox-view" class="view-panel hidden">
+            <header class="view-header">
+              <h2>Form Submissions</h2>
+              <p>Messages received from your website's contact form.</p>
+              <button id="refresh-inbox" class="btn secondary-btn">Refresh</button>
+            </header>
+
+            <div class="inbox-container glass-panel">
+              <div id="inbox-loader" class="loader-lg"></div>
+              <ul id="inbox-list" class="message-list hidden">
+                <!-- Injected via JS -->
+              </ul>
+              <div id="inbox-empty" class="empty-state hidden">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                <p>No messages yet.</p>
+              </div>
+            </div>
+          </div>
+
+        </main>
+      </div>
+    </div>
+    
+    <script type="module" src="/src/admin.js"></script>
+  </body>
+</html>

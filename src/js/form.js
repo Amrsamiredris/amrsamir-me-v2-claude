@@ -1,8 +1,4 @@
-/**
- * form.js — Custom Formspree submission handler
- * Uses application/json to bypass Formspree's "File Uploads Not Permitted" error
- * which happens when using FormData (multipart/form-data) on a free plan.
- */
+import { supabase } from '../supabaseClient.js';
 
 export function initFormWatcher() {
   const form = document.getElementById('contact-form');
@@ -25,25 +21,19 @@ export function initFormWatcher() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch('https://formspree.io/f/mdaqwvek', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
+      const { error } = await supabase
+        .from('form_submissions')
+        .insert([{
+          name: data.name || data.firstName || 'Anonymous',
+          email: data.email,
+          message: data.message
+        }]);
 
-      if (response.ok) {
+      if (!error) {
         successEl.classList.add('visible');
         form.reset();
       } else {
-        const result = await response.json();
-        if (Object.hasOwn(result, 'errors')) {
-          errorEl.textContent = result.errors.map(err => err.message).join(', ');
-        } else {
-          errorEl.textContent = 'Oops! There was a problem submitting your form.';
-        }
+        errorEl.textContent = error.message;
       }
     } catch (error) {
       errorEl.textContent = 'Oops! There was a network error. Please try again.';
