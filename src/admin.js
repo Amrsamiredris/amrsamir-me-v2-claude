@@ -35,6 +35,7 @@ const noAnalyticsMsg = document.getElementById('no-analytics-msg');
 
 // CV Tracker Elements
 const cvCompanyInput = document.getElementById('cv-company');
+const cvTitleInput = document.getElementById('cv-title');
 const generateCvBtn = document.getElementById('generate-cv-link-btn');
 const cvLinkResult = document.getElementById('cv-link-result');
 const cvGeneratedUrl = document.getElementById('cv-generated-url');
@@ -284,12 +285,16 @@ function escapeHTML(str) {
 // CV Tracker Logic
 generateCvBtn.addEventListener('click', () => {
   const company = cvCompanyInput.value.trim();
+  const title = cvTitleInput.value.trim();
   if (!company) {
     alert('Please enter a company name first.');
     return;
   }
   const baseUrl = window.location.origin;
-  const link = `${baseUrl}/cv/?ref=${encodeURIComponent(company)}`;
+  let link = `${baseUrl}/cv/?ref=${encodeURIComponent(company)}`;
+  if (title) {
+    link += `&title=${encodeURIComponent(title)}`;
+  }
   cvGeneratedUrl.textContent = link;
   cvLinkResult.style.display = 'block';
 });

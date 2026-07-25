@@ -79,7 +79,7 @@
     </div>
     
     <h1>Amr Samir's CV</h1>
-    <p class="subtitle">Software Engineer & Tech Lead</p>
+    <p class="subtitle" id="cv-job-title">Software Engineer & Tech Lead</p>
     
     <a href="/dummy-cv.pdf" download="Amr_Samir_CV.pdf" class="btn" id="download-btn">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
@@ -94,11 +94,15 @@
     document.addEventListener('DOMContentLoaded', async () => {
       const urlParams = new URLSearchParams(window.location.search);
       const company = urlParams.get('ref') || 'Anonymous Recruiter';
+      const customTitle = urlParams.get('title');
       
-      // Update UI greeting
+      // Update UI greeting and title
       if (company !== 'Anonymous Recruiter') {
         document.getElementById('company-name').textContent = company;
         document.getElementById('company-greeting').style.display = 'block';
+      }
+      if (customTitle) {
+        document.getElementById('cv-job-title').textContent = customTitle;
       }
 
       // Log the View

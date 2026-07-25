@@ -177,10 +177,14 @@
             </header>
             
             <div class="glass-panel form-card mb-4" style="margin-bottom: 24px;">
-              <div class="input-group">
+              <div class="input-group" style="margin-bottom: 12px;">
                 <label for="cv-company">Company / Recruiter Name</label>
+                <input type="text" id="cv-company" placeholder="e.g. Google" style="width: 100%;" />
+              </div>
+              <div class="input-group">
+                <label for="cv-title">Custom Job Title</label>
                 <div style="display: flex; gap: 10px;">
-                  <input type="text" id="cv-company" placeholder="e.g. Google" style="flex: 1;" />
+                  <input type="text" id="cv-title" placeholder="e.g. Project Manager" style="flex: 1;" />
                   <button class="btn primary-btn" id="generate-cv-link-btn" style="width:auto; padding: 0 20px;">Generate Link</button>
                 </div>
               </div>
