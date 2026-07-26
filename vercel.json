@@ -1,54 +1,16 @@
 {
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{"type": "host", "value": "admin.amrsamir.me"}],
+      "destination": "https://amrsamir.me/admin/",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
-      "source": "/(.*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "events.amrsamir.me"
-        }
-      ],
-      "destination": "/events/$1"
-    },
-    {
-      "source": "/(.*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "marketing.amrsamir.me"
-        }
-      ],
-      "destination": "/marketing/$1"
-    },
-    {
-      "source": "/(.*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "ai.amrsamir.me"
-        }
-      ],
-      "destination": "/ai/$1"
-    },
-    {
-      "source": "/(.*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "admin.amrsamir.me"
-        }
-      ],
-      "destination": "/admin/$1"
-    },
-    {
-      "source": "/(.*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "cv.amrsamir.me"
-        }
-      ],
-      "destination": "/cv/$1"
+      "source": "/cv/:slug",
+      "destination": "/cv/index.html"
     }
   ],
   "headers": [
@@ -58,10 +20,6 @@
         {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
         },
         {
           "key": "X-XSS-Protection",
@@ -81,7 +39,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://formspree.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io https://vitals.vercel-insights.com; frame-src 'self' https://*.substack.com; form-action 'self' https://formspree.io;"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://formspree.io https://us-assets.i.posthog.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' https://formspree.io https://vitals.vercel-insights.com https://us.i.posthog.com https://*.supabase.co; frame-src 'self' https://*.substack.com; frame-ancestors 'self'; form-action 'self' https://formspree.io; object-src 'self';"
         }
       ]
     }

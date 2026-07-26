@@ -1,5 +1,34 @@
 import { supabase } from './supabaseClient.js';
 
+// Load existing PDFs on init
+async function loadExistingPdfs() {
+  const select = document.getElementById('cv-existing-pdf');
+  if (!select) return;
+  try {
+    const { data, error } = await supabase.storage.from('cv_pdfs').list();
+    if (error) {
+      if (error.message.includes('Bucket not found')) {
+        select.innerHTML = '<option value="">(Create the cv_pdfs bucket in Supabase first)</option>';
+        select.disabled = true;
+      }
+      return;
+    }
+    if (data && data.length > 0) {
+      data.forEach(file => {
+        if (file.name !== '.emptyFolderPlaceholder') {
+          const opt = document.createElement('option');
+          const { data: publicUrlData } = supabase.storage.from('cv_pdfs').getPublicUrl(file.name);
+          opt.value = publicUrlData.publicUrl;
+          opt.textContent = file.name;
+          select.appendChild(opt);
+        }
+      });
+    }
+  } catch (err) {
+    console.error('Error loading PDFs:', err);
+  }
+}
+
 // DOM Elements
 const loginSection = document.getElementById('login-section');
 const dashboardSection = document.getElementById('dashboard-section');
@@ -25,8 +54,7 @@ const inboxLoader = document.getElementById('inbox-loader');
 const inboxEmpty = document.getElementById('inbox-empty');
 const refreshInboxBtn = document.getElementById('refresh-inbox');
 
-// Theme & Analytics Elements
-const themeToggleBtn = document.getElementById('theme-toggle');
+// Analytics Elements
 const overviewInboxCount = document.getElementById('overview-inbox-count');
 const analyticsUrlInput = document.getElementById('set-analytics-url');
 const saveAnalyticsBtn = document.getElementById('save-analytics-btn');
@@ -36,7 +64,10 @@ const noAnalyticsMsg = document.getElementById('no-analytics-msg');
 // CV Tracker Elements
 const cvCompanyInput = document.getElementById('cv-company');
 const cvTitleInput = document.getElementById('cv-title');
+const cvSlugInput = document.getElementById('cv-slug');
+const cvPdfInput = document.getElementById('cv-pdf');
 const generateCvBtn = document.getElementById('generate-cv-link-btn');
+const generateCvLoader = document.getElementById('generate-cv-loader');
 const cvLinkResult = document.getElementById('cv-link-result');
 const cvGeneratedUrl = document.getElementById('cv-generated-url');
 const refreshCvStatsBtn = document.getElementById('refresh-cv-stats');
@@ -53,11 +84,7 @@ const usersRolesBody = document.getElementById('users-roles-body');
 
 // Initialization
 async function init() {
-  // Check theme
-  const savedTheme = localStorage.getItem('adminTheme');
-  if (savedTheme === 'classic-black') {
-    document.body.setAttribute('data-theme', 'classic-black');
-  }
+
   const { data: { session } } = await supabase.auth.getSession();
   
   if (session) {
@@ -118,6 +145,7 @@ function showDashboard(user) {
   loadInbox();
   loadCvStats();
   loadUsersRoles();
+  loadExistingPdfs();
 }
 
 // Navigation
@@ -196,9 +224,6 @@ settingsForm.addEventListener('submit', async (e) => {
     updated_at: new Date().toISOString()
   };
 
-  // We assume there's one row (ID 1 usually, but let's just update based on the single row approach)
-  // Actually, we can fetch the existing ID first or upsert.
-  // The safest way is an update if it exists.
   const { data: existingData } = await supabase.from('settings').select('id').limit(1).single();
 
   let result;
@@ -283,28 +308,94 @@ function escapeHTML(str) {
 }
 
 // CV Tracker Logic
-generateCvBtn.addEventListener('click', () => {
+generateCvBtn.addEventListener('click', async () => {
   const company = cvCompanyInput.value.trim();
   const title = cvTitleInput.value.trim();
-  if (!company) {
-    alert('Please enter a company name first.');
+  let slug = cvSlugInput.value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-');
+  const pdfFile = cvPdfInput.files[0];
+
+  if (!company || !slug || !title) {
+    alert('Please enter a company name, title, and URL slug.');
     return;
   }
-  const baseUrl = window.location.origin;
-  let link = `${baseUrl}/cv/?ref=${encodeURIComponent(company)}`;
-  if (title) {
-    link += `&title=${encodeURIComponent(title)}`;
+
+  generateCvBtn.querySelector('span').style.display = 'none';
+  generateCvLoader.classList.remove('hidden');
+
+  let finalPdfUrl = null;
+
+  try {
+    // 1. Upload PDF if selected
+    if (pdfFile) {
+      const fileName = `${slug}-${Date.now()}.pdf`;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('cv_pdfs')
+        .upload(fileName, pdfFile, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (uploadError) throw uploadError;
+      
+      const { data: publicUrlData } = supabase.storage
+        .from('cv_pdfs')
+        .getPublicUrl(fileName);
+        
+      finalPdfUrl = publicUrlData.publicUrl;
+    } else if (document.getElementById('cv-existing-pdf') && document.getElementById('cv-existing-pdf').value) {
+      // Reuse selected PDF
+      finalPdfUrl = document.getElementById('cv-existing-pdf').value;
+    }
+
+    // 2. Insert into cv_links
+    const { error: dbError } = await supabase
+      .from('cv_links')
+      .insert([{
+        slug: slug,
+        company: company,
+        title: title,
+        pdf_url: finalPdfUrl
+      }]);
+
+    if (dbError) {
+      if (dbError.code === '23505') throw new Error('That URL slug is already taken. Please choose another.');
+      throw dbError;
+    }
+
+    const baseUrl = window.location.origin;
+    const link = `${baseUrl}/cv/${slug}`;
+    cvGeneratedUrl.textContent = link;
+    cvLinkResult.style.display = 'block';
+
+    // Reset form
+    cvCompanyInput.value = '';
+    cvTitleInput.value = '';
+    cvSlugInput.value = '';
+    cvPdfInput.value = '';
+  } catch (error) {
+    console.error('Error generating CV link:', error);
+    let errorMsg = error.message || 'Failed to generate link.';
+    if (errorMsg.includes('Bucket not found') || errorMsg.includes('storage bucket')) {
+      errorMsg = "ACTION REQUIRED: You need to create a storage bucket in Supabase!\n\n1. Go to your Supabase Dashboard\n2. Click 'Storage' on the left\n3. Create a New Bucket named 'cv_pdfs'\n4. Make sure it is Public!";
+    }
+    alert(errorMsg);
+  } finally {
+    generateCvBtn.querySelector('span').style.display = 'block';
+    generateCvLoader.classList.add('hidden');
   }
-  cvGeneratedUrl.textContent = link;
-  cvLinkResult.style.display = 'block';
 });
 
 async function loadCvStats() {
   cvStatsBody.innerHTML = '<tr><td colspan="3" style="padding: 20px; text-align: center; color: var(--text-muted);">Loading stats...</td></tr>';
   
   const { data, error } = await supabase
-    .from('cv_events')
-    .select('*')
+    .from('cv_views')
+    .select(`
+      *,
+      cv_links (
+        company
+      )
+    `)
     .order('created_at', { ascending: false });
     
   if (error || !data || data.length === 0) {
@@ -323,9 +414,10 @@ async function loadCvStats() {
     
     const badgeColor = event.event_type === 'download' ? '#10b981' : '#3b82f6';
     const badge = `<span style="background: ${badgeColor}33; color: ${badgeColor}; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; text-transform: uppercase;">${event.event_type}</span>`;
+    const companyName = event.cv_links ? event.cv_links.company : 'Unknown';
     
     tr.innerHTML = `
-      <td style="padding: 12px 8px; font-weight: 500;">${escapeHTML(event.company_name)}</td>
+      <td style="padding: 12px 8px; font-weight: 500;">${escapeHTML(companyName)}</td>
       <td style="padding: 12px 8px;">${badge}</td>
       <td style="padding: 12px 8px; color: var(--text-muted); font-size: 14px;">${date}</td>
     `;
@@ -390,17 +482,67 @@ inviteForm.addEventListener('submit', async (e) => {
   }
 });
 
-// Theme Toggle
-themeToggleBtn.addEventListener('click', () => {
-  const currentTheme = document.body.getAttribute('data-theme');
-  if (currentTheme === 'classic-black') {
-    document.body.removeAttribute('data-theme');
-    localStorage.removeItem('adminTheme');
-  } else {
-    document.body.setAttribute('data-theme', 'classic-black');
-    localStorage.setItem('adminTheme', 'classic-black');
+
+
+// Documentation Logic
+const docTabs = document.querySelectorAll('.doc-tab');
+const docContent = document.getElementById('doc-content');
+
+async function loadDoc(docName) {
+  if (!docContent) return;
+  docContent.innerHTML = '<p style="color: var(--text-muted);">Loading documentation...</p>';
+  try {
+    const res = await fetch(`/${docName}.md`);
+    if (!res.ok) throw new Error('Document not found');
+    const md = await res.text();
+    // Parse markdown using marked.js
+    if (window.marked) {
+      docContent.innerHTML = window.marked.parse(md);
+      
+      // Check and render mermaid diagrams
+      if (window.mermaid) {
+        const mermaidNodes = docContent.querySelectorAll('.language-mermaid');
+        mermaidNodes.forEach((node, i) => {
+          const graphDefinition = node.textContent;
+          const parentPre = node.parentNode;
+          const newDiv = document.createElement('div');
+          newDiv.className = 'mermaid';
+          newDiv.textContent = graphDefinition;
+          parentPre.parentNode.replaceChild(newDiv, parentPre);
+        });
+        
+        if (mermaidNodes.length > 0) {
+          try {
+            await window.mermaid.run({ querySelector: '.mermaid' });
+          } catch (e) {
+            console.error('Mermaid rendering failed', e);
+          }
+        }
+      }
+    } else {
+      docContent.innerHTML = '<p style="color: var(--text-muted);">Error: Markdown parser not loaded.</p>';
+    }
+  } catch (err) {
+    docContent.innerHTML = `<p style="color: var(--text-muted);">Error loading ${docName}.md</p>`;
   }
+}
+
+docTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    // Remove active class from all
+    docTabs.forEach(t => t.classList.remove('active'));
+    // Add to clicked
+    tab.classList.add('active');
+    // Load doc
+    loadDoc(tab.dataset.doc);
+  });
 });
+
+// Load default doc if we navigate to documents view
+document.querySelector('[data-target="documents-view"]').addEventListener('click', () => {
+  loadDoc('project_architecture');
+});
+
 
 // Start
 init();

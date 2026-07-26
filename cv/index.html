@@ -70,6 +70,7 @@
     }
     .greeting span { color: var(--accent); font-weight: 600; }
   </style>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 </head>
 <body>
 
@@ -92,11 +93,29 @@
     import { supabase } from '../src/supabaseClient.js';
 
     document.addEventListener('DOMContentLoaded', async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const company = urlParams.get('ref') || 'Anonymous Recruiter';
-      const customTitle = urlParams.get('title');
+      // 1. Get slug from path (e.g., /cv/apple)
+      const pathSegments = window.location.pathname.split('/').filter(Boolean);
+      const slug = pathSegments.length > 1 ? pathSegments[pathSegments.length - 1] : null;
       
-      // Update UI greeting and title
+      const urlParams = new URLSearchParams(window.location.search);
+      let company = urlParams.get('ref') || 'Anonymous Recruiter';
+      let customTitle = urlParams.get('title');
+      let linkId = null;
+
+      // 2. Fetch from cv_links if slug exists
+      if (slug && slug !== 'index.html') {
+        const { data, error } = await supabase.from('cv_links').select('*').eq('slug', slug).single();
+        if (data) {
+          company = data.company;
+          customTitle = data.title;
+          linkId = data.id;
+          if (data.pdf_url) {
+            document.getElementById('download-btn').href = data.pdf_url;
+          }
+        }
+      }
+      
+      // Update UI
       if (company !== 'Anonymous Recruiter') {
         document.getElementById('company-name').textContent = company;
         document.getElementById('company-greeting').style.display = 'block';
@@ -106,16 +125,20 @@
       }
 
       // Log the View
-      await supabase.from('cv_events').insert([
-        { company_name: company, event_type: 'view' }
-      ]);
+      if (linkId) {
+        await supabase.from('cv_views').insert([{ link_id: linkId, event_type: 'view' }]);
+      } else if (urlParams.get('ref')) {
+        // Fallback for old URL format tracking (optional, but good for backward compatibility)
+        await supabase.from('cv_events').insert([{ company_name: company, event_type: 'view' }]);
+      }
 
       // Handle Download Click
       document.getElementById('download-btn').addEventListener('click', async () => {
-        await supabase.from('cv_events').insert([
-          { company_name: company, event_type: 'download' }
-        ]);
-        // Let the native HTML 'download' attribute handle the actual file download
+        if (linkId) {
+          await supabase.from('cv_views').insert([{ link_id: linkId, event_type: 'download' }]);
+        } else if (urlParams.get('ref')) {
+          await supabase.from('cv_events').insert([{ company_name: company, event_type: 'download' }]);
+        }
       });
     });
   </script>

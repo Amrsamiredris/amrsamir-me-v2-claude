@@ -1,6 +1,22 @@
 # Domain & URL Guide
 
+
+
 This document lists all active URLs associated with your platform. 
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Hostinger DNS
+    participant Vercel Edge
+    participant Application
+    
+    User->>Hostinger DNS: Navigate to admin.amrsamir.me
+    Hostinger DNS-->>User: Resolve CNAME to vercel-dns.com
+    User->>Vercel Edge: Request /admin route
+    Vercel Edge-->>Application: Forward Request
+    Application-->>User: Render Dashboard
+```
 
 ## Main Connected Domains (Hostinger)
 These are your primary, custom domains. They will become fully active as soon as the DNS propagation finishes (typically 5 to 60 minutes after you update the A records in Hostinger).

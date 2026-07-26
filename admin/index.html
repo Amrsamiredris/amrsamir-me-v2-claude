@@ -9,8 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/src/admin.css" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
-  <body>
+  <body data-theme="classic-black">
     <!-- Abstract Background -->
     <div class="bg-shape shape1"></div>
     <div class="bg-shape shape2"></div>
@@ -81,15 +82,12 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
               Form Submissions
             </button>
+            <a href="/cv/" target="_blank" class="nav-item" style="text-decoration: none;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+              View Hidden CV
+            </a>
           </nav>
-          
-          <div class="sidebar-theme">
-            <button id="theme-toggle" class="btn secondary-btn" style="width:100%; display:flex; gap:10px; justify-content:center; align-items:center;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-              <span>Toggle Black Theme</span>
-            </button>
-          </div>
-          
+
           <div class="sidebar-footer">
             <div class="user-info">
               <div class="avatar">A</div>
@@ -154,18 +152,28 @@
           <!-- View: Documents -->
           <div id="documents-view" class="view-panel hidden">
             <header class="view-header">
-              <h2>Architecture Documents</h2>
-              <p>View the system architecture and design guidelines.</p>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <h2>Documentation</h2>
+                  <p>View the system architecture and design guidelines.</p>
+                </div>
+                <button class="btn primary-btn" onclick="window.print()" style="padding: 8px 16px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px; vertical-align: middle;"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                  Download PDF
+                </button>
+              </div>
             </header>
             
-            <div style="display: flex; gap: 20px; margin-bottom: 24px;">
-              <button class="btn secondary-btn" onclick="document.getElementById('doc-iframe').src='/project_architecture.pdf'">Project Architecture</button>
-              <button class="btn secondary-btn" onclick="document.getElementById('doc-iframe').src='/design_system.pdf'">Design System</button>
-              <button class="btn secondary-btn" onclick="document.getElementById('doc-iframe').src='/domains_guide.pdf'">Domains Guide</button>
+            <div style="display: flex; gap: 10px; margin-bottom: 24px;">
+              <button class="btn secondary-btn doc-tab active" data-doc="project_architecture">Project Architecture</button>
+              <button class="btn secondary-btn doc-tab" data-doc="design_system">Design System</button>
+              <button class="btn secondary-btn doc-tab" data-doc="domains_guide">Domains Guide</button>
             </div>
             
-            <div class="iframe-container glass-panel" style="padding:0; overflow:hidden; border-radius:12px; height: 600px;">
-              <iframe id="doc-iframe" src="/project_architecture.pdf" style="width: 100%; height: 100%; border: none;"></iframe>
+            <div class="glass-panel" style="padding: 32px; border-radius: 12px; min-height: 600px; background: rgba(255, 255, 255, 0.02);">
+              <div id="doc-content" class="markdown-body" style="color: var(--text-primary); line-height: 1.6; font-size: 15px;">
+                <p style="color: var(--text-muted);">Loading documentation...</p>
+              </div>
             </div>
           </div>
 
@@ -181,13 +189,32 @@
                 <label for="cv-company">Company / Recruiter Name</label>
                 <input type="text" id="cv-company" placeholder="e.g. Google" style="width: 100%;" />
               </div>
-              <div class="input-group">
+              <div class="input-group" style="margin-bottom: 12px;">
                 <label for="cv-title">Custom Job Title</label>
-                <div style="display: flex; gap: 10px;">
-                  <input type="text" id="cv-title" placeholder="e.g. Project Manager" style="flex: 1;" />
-                  <button class="btn primary-btn" id="generate-cv-link-btn" style="width:auto; padding: 0 20px;">Generate Link</button>
-                </div>
+                <input type="text" id="cv-title" placeholder="e.g. Project Manager" style="width: 100%;" />
               </div>
+              <div class="input-group" style="margin-bottom: 12px;">
+                <label for="cv-slug">URL Slug (e.g. "apple" for /cv/apple)</label>
+                <input type="text" id="cv-slug" placeholder="apple" style="width: 100%;" />
+              </div>
+              <div style="margin-bottom: 24px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 0.9rem;">Upload New Custom PDF CV (Optional)</label>
+                <input type="file" id="cv-pdf" accept=".pdf" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;" />
+              </div>
+              
+              <div style="text-align: center; margin: 10px 0; color: var(--text-secondary); font-size: 0.9rem;">-- OR --</div>
+              
+              <div style="margin-bottom: 24px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 0.9rem;">Reuse Previously Uploaded PDF (Optional)</label>
+                <select id="cv-existing-pdf" class="input-field" style="width: 100%; background: rgba(255,255,255,0.05); padding: 12px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; cursor: pointer;">
+                  <option value="">-- Select an existing PDF --</option>
+                </select>
+                <p style="margin-top: 8px; font-size: 0.85rem; color: var(--text-secondary);">If both are left empty, your default CV will be used.</p>
+              </div>
+              <button class="btn primary-btn" id="generate-cv-link-btn" style="margin-top: 16px;">
+                <span>Generate Link</span>
+                <div class="loader hidden" id="generate-cv-loader"></div>
+              </button>
               <div id="cv-link-result" style="margin-top: 15px; padding: 15px; background: rgba(59, 130, 246, 0.1); border-radius: 8px; border: 1px dashed var(--accent); display: none;">
                 <p style="font-size: 14px; margin-bottom: 8px;">Send this exact link:</p>
                 <code id="cv-generated-url" style="color: var(--accent); word-break: break-all;"></code>
@@ -332,6 +359,11 @@
       </div>
     </div>
     
+    <!-- Markdown Parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Mermaid Diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({ startOnLoad: false, theme: 'dark' });</script>
     <script type="module" src="/src/admin.js"></script>
   </body>
 </html>

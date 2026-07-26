@@ -1,120 +1,72 @@
-# ✦ Design System & UI Guidelines
+# Design System
 
-Welcome to the official Design System for **amrsamir.me**. This document acts as the single source of truth for the platform's visual language, bridging the gap between the public-facing minimalist architecture and the secure, functional admin panel.
 
-![Design System Overview](/Users/amrsamiredris/.gemini/antigravity/brain/0f8339e5-0695-4acc-857c-fcb457eabf17/design_system_cover_1785000729877.jpg)
 
----
-
-## 1. Core Philosophy
-
-The overarching aesthetic is rooted in **minimalism, focus, and raw performance**. The public website acts as a developer-centric portfolio (inspired by CLI/terminal interfaces), while the Admin Panel introduces structured glassmorphism for enhanced usability—while still offering a "Classic Black" toggle for aesthetic parity.
-
-> [!TIP]
-> **Performance First**
-> The design system relies heavily on Vanilla CSS and native browser capabilities to ensure lightning-fast load times. We avoid heavy CSS frameworks like Tailwind or Bootstrap to keep the bundle size minimal.
-
----
-
-## 2. Design Tokens
-
-These are the fundamental building blocks (variables) used across the platform.
-
-### 🎨 Color Palette
-
-| Token Name | Hex Value | Usage context |
-| :--- | :--- | :--- |
-| `--bg-primary` | `#000000` | Main backgrounds, core canvas. |
-| `--bg-secondary`| `#0a0a0a` | Elevated surfaces, cards in dark mode. |
-| `--border-color`| `#333333` | Subtle outlines, dividers, inputs. |
-| `--text-main` | `#ededed` | Primary body text and headings. |
-| `--text-muted` | `#888888` | Secondary text, placeholders, metadata. |
-
-### 🔤 Typography
-
-We utilize a modern, highly legible font stack optimized for digital interfaces.
+Welcome to the **Nebula Design System**. This document outlines the core aesthetic principles, typography, and color tokens that power the visual identity of the entire platform.
 
 ```mermaid
-graph LR
-    A[Primary Font Stack] --> B(Geist)
-    A --> C(Inter)
-    A --> D(System Defaults)
-    
-    E[Monospace Stack] --> F(Fira Code)
-    E --> G(Consolas)
-    E --> H(Menlo)
+mindmap
+  root((Design System))
+    Aesthetics
+      Glassmorphism
+      Subtle Glows
+      Rounded Corners
+    Typography
+      Fira Code
+      Inter
+    Color Palette
+      Neon Purple
+      Cyan Blue
+      Deep Dark Background
 ```
 
-- **Body Text**: `16px` (1rem) with a line-height of `1.6`.
-- **Headings**: Semi-bold (`600`) scaling down for mobile responsiveness.
-- **Micro-copy**: `14px` (`0.875rem`) for hints and small labels.
+## 1. Core Principles
 
----
+The design philosophy is centered around a **Premium Dark Aesthetic** with vibrant accents, glassmorphism, and subtle micro-animations. It is designed to feel highly interactive, responsive, and visually stunning.
 
-## 3. The Dual-Theme Architecture
+## 2. Color Palette
 
-The Admin Panel features a unique Dual-Theme architecture, allowing the owner to switch between a rich, interactive environment and a focused, stark environment.
+The color system relies on deep, rich backgrounds contrasted with highly saturated neon accents.
 
-````carousel
+### Primary Accents
+- **Cyberpunk Purple**: `#8b5cf6` (Primary action buttons, active states)
+- **Forest Green**: `#10b981` (Success states, secondary accents)
+- **Sunset Orange**: `#f97316` (Warning states, tertiary accents)
+
+### Base Colors
+- **Classic Black (Background)**: `#050505`
+- **Surface Dark**: `#111111`
+- **Surface Lighter**: `#1a1a1a`
+- **Text Primary**: `#ffffff`
+- **Text Secondary**: `#a1a1aa`
+- **Text Muted**: `#71717a`
+
+## 3. Typography
+
+- **Primary Font**: `Inter`, sans-serif
+- **Headings**: Bold, tight letter-spacing (-0.02em)
+- **Body**: Regular weight, optimal line height (1.6) for readability
+
+## 4. UI Components
+
+### Glassmorphism Panels
+Used for cards, the admin sidebar, and elevated containers.
 ```css
-/* THEME 1: Glassmorphism (Default) */
-.glass-panel {
-  background: rgba(30, 41, 59, 0.5);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-}
+background: rgba(255, 255, 255, 0.03);
+backdrop-filter: blur(10px);
+border: 1px solid rgba(255, 255, 255, 0.05);
+border-radius: 12px;
 ```
-<!-- slide -->
-```css
-/* THEME 2: Classic Black (Strict Minimalist) */
-body[data-theme="classic-black"] .glass-panel {
-  backdrop-filter: none;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-}
-```
-````
-
-### Theme Behaviors:
-1. **Glassmorphism**: Relies on `backdrop-filter: blur()`, abstract floating CSS animations (the "blobs"), and slightly rounded corners (`16px`).
-2. **Classic Black**: Disables all background animations, removes background blurs, enforces `#000` and `#0a0a0a` backgrounds, and sharpens border radii to `6px` for a strict, terminal-like feel.
-
----
-
-## 4. Components
-
-### Inputs & Forms
-Forms follow a strict vertical layout with top-aligned labels.
-- **Padding**: `14px 16px`
-- **Focus State**: Uses a solid primary color border with a subtle box-shadow ring to indicate active focus.
 
 ### Buttons
-Buttons are strictly constrained to necessary actions.
-- **Primary**: Solid background using the accent color, high contrast text.
-- **Secondary**: Transparent background with a subtle border, used for secondary actions like "Refresh" or "Toggle Theme".
+- **Primary Button**: Uses the `Cyberpunk Purple` accent with a subtle glow on hover.
+- **Secondary Button**: Transparent background with a `rgba(255,255,255,0.1)` border, turning solid on hover.
 
----
+### Inputs
+- **Text Fields**: Dark background (`rgba(255,255,255,0.05)`), white text, rounded corners (`8px`), with a subtle border that highlights to purple on focus.
 
-## 5. UI/UX Flow (Mind Map)
+## 5. Animations
 
-Here is a visual map of how a user (both public and admin) navigates the design system.
-
-```mermaid
-graph TD
-  A[amrsamir.me] --> B(Public Persona Pages)
-  B --> B1(Events)
-  B --> B2(Marketing)
-  B --> B3(AI & Tech)
-  
-  A --> C(Interactive Elements)
-  C --> C1(CMD+K Palette)
-  C --> C2(Contact Forms)
-  
-  A --> D(Secure Admin)
-  D --> D1(Dashboard Overview)
-  D --> D2(Analytics Iframe)
-  D --> D3(Live Settings Sync)
-  D --> D4(Inbox Feed)
-```
+- **Hover Effects**: All interactive elements scale slightly (1.02) and shift up (-2px) with a smooth `0.2s ease` transition.
+- **Page Load**: Elements fade in and slide up using the `Reveal` animation (`0.8s ease-out`).
+- **Background**: The main background features a slow, continuous radial gradient pulse to add depth without being distracting.

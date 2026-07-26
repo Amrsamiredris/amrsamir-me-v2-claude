@@ -1,4 +1,24 @@
-# amrsamir.me — Project Architecture & Site Map
+# Platform Architecture
+
+
+
+This document provides a high-level overview of the `amrsamir.me` software architecture, database schemas, and networking layer.
+
+## System Flow
+
+```mermaid
+flowchart TD
+    User([User / Recruiter]) -->|Visits Website| Cloudflare(Cloudflare DNS)
+    Cloudflare -->|Routes to| Vercel(Vercel Edge Network)
+    
+    Vercel --> MainSite[Main Website /amrsamir.me]
+    Vercel --> CVTracker[CV Tracker /cv.amrsamir.me]
+    Vercel --> AdminPanel[Admin Panel /admin.amrsamir.me]
+    
+    MainSite -->|Submit Form| DB[(Supabase DB)]
+    CVTracker -->|Log Visit & Download| DB
+    AdminPanel -->|Auth & Manage| DB
+```
 
 This document serves as a comprehensive brief and map of the `amrsamir.me` project. It is intended for software engineers, stakeholders, and developers who need to understand the structural, architectural, and technological foundation of the platform.
 
@@ -54,7 +74,16 @@ The application is structured as a Multi-Page Application (MPA) using Vite's Rol
   `admin/index.html` — Secure dashboard exclusively for the owner. 
   - **Login Screen**: Prevents unauthorized access.
   - **Settings View**: Allows the owner to dynamically update global links (WhatsApp, Email, LinkedIn, Substack). Updates here are instantly reflected across all public pages.
-  - **Inbox View**: A real-time feed of all contact form submissions sent from the public persona pages.
+  - **CV Tracker**: Dynamic CV link generator that allows the owner to select an uploaded PDF from the `cv_pdfs` Supabase bucket, define a custom slug (e.g., `apple`), and instantly generate a tracking link.
+  - **Documentation**: Dynamic markdown renderer for viewing and extracting Architecture, Design System, and Domain Guides as PDFs.
+
+- **`/cv` (Dynamic CV Redirects)**  
+  `cv/index.html` — Endpoint for handling customized CV links (e.g., `amrsamir.me/cv/apple`). Fetches the recruiter record and automatically redirects to the stored PDF in the Supabase bucket.
+
+### External Applications (Isolated Repositories)
+The following platforms are hosted entirely separately from the main `amrsamir.me` repository to decouple complex logic and prevent clutter:
+- **Shop**: E-commerce interface (TBD)
+- **Tools**: Specialized software tools interface (TBD)
 
 ---
 
@@ -73,15 +102,46 @@ Stores the global dynamic links used across the platform.
 
 *RLS Rules*: Public can read (SELECT). Only Auth can UPDATE.
 
-### `public.form_submissions`
-Stores messages sent by users from the website.
-- `id` (bigint, PK)
-- `name` (text)
-- `email` (text)
-- `message` (text)
+### `public.cv_views`
+Logs every time someone views or downloads a CV.
+- `id` (uuid, PK)
+- `cv_link_id` (uuid, FK to cv_trackers)
+- `event_type` (text) - 'view' or 'download'
 - `created_at` (timestamp)
 
-*RLS Rules*: Public can insert (INSERT). Only Auth can read (SELECT) or DELETE.
+```mermaid
+erDiagram
+    cv_trackers ||--o{ cv_views : "tracks"
+    cv_trackers {
+        uuid id PK
+        string slug "Unique URL"
+        string recruiter_name
+        string pdf_url
+    }
+    cv_views {
+        uuid id PK
+        uuid cv_link_id FK
+        string event_type "view | download"
+    }
+```
+
+*RLS Rules*: Public can read (SELECT). Only Auth can UPDATE.
+
+### `public.form_submissions` (Deprecated/Removed)
+Previously stored messages sent by users. Forms now submit via **Formspree** which bypasses the database completely.
+
+### `public.cv_trackers`
+Stores generated, custom CV links.
+- `id` (uuid, PK)
+- `slug` (text, unique) - The custom URL path (e.g., 'apple')
+- `recruiter_name` (text)
+- `pdf_url` (text) - URL pointing to the PDF inside the `cv_pdfs` bucket
+- `created_at` (timestamp)
+
+*RLS Rules*: Public can read (SELECT). Only Auth can INSERT/UPDATE/DELETE.
+
+### Storage Bucket: `cv_pdfs`
+A public Supabase Storage bucket used exclusively for storing different versions of PDF CVs. The Admin Dashboard populates its upload dropdown by fetching the file list from this bucket.
 
 ---
 

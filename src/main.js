@@ -20,15 +20,7 @@ async function initDynamicSettings() {
           el.href = `https://wa.me/${data.whatsapp.replace(/[^0-9]/g, '')}`;
         });
       }
-      if (data.email) {
-        document.querySelectorAll('a[href^="mailto:"]').forEach(el => {
-          el.href = `mailto:${data.email}`;
-          // If the link text is an email, update it
-          if (el.textContent.includes('@')) {
-            el.textContent = data.email;
-          }
-        });
-      }
+
       if (data.linkedin) {
         document.querySelectorAll('a[href*="linkedin.com/in/"]').forEach(el => {
           el.href = data.linkedin;
@@ -36,8 +28,8 @@ async function initDynamicSettings() {
       }
       if (data.substack) {
         document.querySelectorAll('iframe[src*="substack.com/embed"]').forEach(el => {
-          // Keep embed params if needed
-          el.src = data.substack + '/embed?transparent=1&light=1';
+          // Keep embed params if needed. Use background=transparent for dark mode support.
+          el.src = data.substack + '/embed?transparent=1';
         });
       }
     }
@@ -128,6 +120,23 @@ document.addEventListener('DOMContentLoaded', () => {
   initCommandPalette();
   initRotator();
   initBgAnimation();
+  
+  // Auto-scroll logic (scrolls down slightly after 3.5s if user hasn't scrolled)
+  if (window.location.pathname === '/' || window.location.pathname === '') {
+    let hasScrolled = false;
+    window.addEventListener('scroll', () => { hasScrolled = true; }, { once: true });
+    
+    setTimeout(() => {
+      if (!hasScrolled && window.scrollY === 0) {
+        const target = document.getElementById('main-content');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.scrollBy({ top: window.innerHeight * 0.25, behavior: 'smooth' });
+        }
+      }
+    }, 3500);
+  }
 });
 
 const TITLES = [
