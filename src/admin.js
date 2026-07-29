@@ -146,6 +146,8 @@ function showDashboard(user) {
   loadCvStats();
   loadUsersRoles();
   loadExistingPdfs();
+  loadCmsConfig();
+  loadTechTools();
 }
 
 // Navigation
@@ -542,6 +544,133 @@ docTabs.forEach(tab => {
 document.querySelector('[data-target="documents-view"]').addEventListener('click', () => {
   loadDoc('project_architecture');
 });
+
+
+// CMS Logic
+async function loadCmsConfig() {
+  const { data, error } = await supabase.from('cms_config').select('*');
+  if (error || !data) return;
+  
+  data.forEach(item => {
+    const el = document.getElementById(`cms-${item.key}`);
+    if (el) {
+      if (item.type === 'boolean') {
+        el.checked = item.value === 'true';
+      } else {
+        el.value = item.value || '';
+      }
+    }
+  });
+}
+
+const cmsForm = document.getElementById('cms-form');
+if (cmsForm) {
+  cmsForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('save-cms-btn');
+    const msg = document.getElementById('cms-msg');
+    const loader = document.getElementById('cms-loader');
+    
+    btn.querySelector('span').classList.add('hidden');
+    loader.classList.remove('hidden');
+    msg.innerHTML = '';
+    
+    const updates = [
+      { key: 'hero_title', value: document.getElementById('cms-hero_title').value, type: 'text' },
+      { key: 'hero_subtitle', value: document.getElementById('cms-hero_subtitle').value, type: 'text' },
+      { key: 'show_career_timeline', value: document.getElementById('cms-show_career_timeline').checked.toString(), type: 'boolean' },
+      { key: 'show_contact_form', value: document.getElementById('cms-show_contact_form').checked.toString(), type: 'boolean' },
+      { key: 'footer_tagline', value: document.getElementById('cms-footer_tagline').value, type: 'textarea' }
+    ];
+    
+    const { error } = await supabase.from('cms_config').upsert(updates);
+    
+    btn.querySelector('span').classList.remove('hidden');
+    loader.classList.add('hidden');
+    
+    if (error) {
+      msg.innerHTML = `<span class="error-msg" style="background:transparent;padding:0;">Error: ${error.message}</span>`;
+    } else {
+      msg.innerHTML = `<span class="success-msg">CMS Content saved successfully!</span>`;
+      setTimeout(() => { msg.innerHTML = ''; }, 3000);
+    }
+  });
+}
+
+// Tech Tools Logic
+async function loadTechTools() {
+  const toolsBody = document.getElementById('tools-list-body');
+  if (!toolsBody) return;
+  
+  toolsBody.innerHTML = '<tr><td colspan="4" style="padding: 20px; text-align: center; color: var(--text-muted);">Loading tools...</td></tr>';
+  
+  const { data, error } = await supabase.from('tech_tools').select('*').order('created_at', { ascending: false });
+  
+  if (error || !data || data.length === 0) {
+    toolsBody.innerHTML = '<tr><td colspan="4" style="padding: 20px; text-align: center; color: var(--text-muted);">No tools found. Add one above!</td></tr>';
+    return;
+  }
+  
+  toolsBody.innerHTML = '';
+  data.forEach(tool => {
+    const tr = document.createElement('tr');
+    tr.style.borderBottom = '1px solid var(--border-subtle)';
+    tr.innerHTML = `
+      <td style="padding: 12px 8px; font-weight: 500;">
+        ${tool.url ? `<a href="${escapeHTML(tool.url)}" target="_blank" style="color: var(--accent); text-decoration: none;">${escapeHTML(tool.name)}</a>` : escapeHTML(tool.name)}
+      </td>
+      <td style="padding: 12px 8px;"><span style="background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 4px; font-size: 13px;">${escapeHTML(tool.category || 'General')}</span></td>
+      <td style="padding: 12px 8px; color: var(--text-muted); font-size: 14px;">${escapeHTML(tool.description || '')}</td>
+      <td style="padding: 12px 8px;">
+        <button class="btn text-btn delete-tool-btn" data-id="${tool.id}" style="color: #ef4444; padding: 4px 8px; font-size: 13px;">Delete</button>
+      </td>
+    `;
+    toolsBody.appendChild(tr);
+  });
+  
+  document.querySelectorAll('.delete-tool-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      if (confirm('Are you sure you want to delete this tool?')) {
+        const id = e.target.dataset.id;
+        await supabase.from('tech_tools').delete().eq('id', id);
+        loadTechTools();
+      }
+    });
+  });
+}
+
+const addToolForm = document.getElementById('add-tool-form');
+if (addToolForm) {
+  addToolForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('save-tool-btn');
+    const msg = document.getElementById('tool-msg');
+    const loader = document.getElementById('tool-loader');
+    
+    btn.querySelector('span').classList.add('hidden');
+    loader.classList.remove('hidden');
+    msg.innerHTML = '';
+    
+    const name = document.getElementById('tool-name').value;
+    const category = document.getElementById('tool-category').value;
+    const url = document.getElementById('tool-url').value;
+    const description = document.getElementById('tool-desc').value;
+    
+    const { error } = await supabase.from('tech_tools').insert([{ name, category, url, description }]);
+    
+    btn.querySelector('span').classList.remove('hidden');
+    loader.classList.add('hidden');
+    
+    if (error) {
+      msg.innerHTML = `<span class="error-msg" style="background:transparent;padding:0;">Error: ${error.message}</span>`;
+    } else {
+      msg.innerHTML = `<span class="success-msg">Tool added!</span>`;
+      addToolForm.reset();
+      loadTechTools();
+      setTimeout(() => { msg.innerHTML = ''; }, 3000);
+    }
+  });
+}
 
 
 // Start

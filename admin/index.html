@@ -78,6 +78,14 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
               Global Settings
             </button>
+            <button class="nav-item" data-target="cms-view">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              Content Manager
+            </button>
+            <button class="nav-item" data-target="tools-view">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+              Tech Stack & Tools
+            </button>
             <button class="nav-item" data-target="inbox-view">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
               Form Submissions
@@ -332,6 +340,116 @@
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+
+          <!-- View: Content Manager (CMS) -->
+          <div id="cms-view" class="view-panel hidden">
+            <header class="view-header">
+              <h2>Content Manager</h2>
+              <p>Edit website text and toggle visibility of major sections in real-time.</p>
+            </header>
+            
+            <div class="glass-panel form-card">
+              <form id="cms-form">
+                <h3 style="margin-bottom: 16px; font-size: 1.1rem; color: var(--text-primary);">Hero Section</h3>
+                <div class="input-group">
+                  <label for="cms-hero_title">Hero Title</label>
+                  <input type="text" id="cms-hero_title" placeholder="Amr Samir Edris" />
+                </div>
+                <div class="input-group">
+                  <label for="cms-hero_subtitle">Hero Subtitle</label>
+                  <input type="text" id="cms-hero_subtitle" placeholder="Select a persona below to explore." />
+                </div>
+
+                <h3 style="margin-top: 32px; margin-bottom: 16px; font-size: 1.1rem; color: var(--text-primary);">Section Visibility</h3>
+                <div class="input-group" style="flex-direction: row; align-items: center; justify-content: space-between;">
+                  <label for="cms-show_career_timeline" style="margin-bottom: 0;">Show Career Timeline</label>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="cms-show_career_timeline">
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+                <div class="input-group" style="flex-direction: row; align-items: center; justify-content: space-between;">
+                  <label for="cms-show_contact_form" style="margin-bottom: 0;">Show Newsletter/Contact Form</label>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="cms-show_contact_form">
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+
+                <h3 style="margin-top: 32px; margin-bottom: 16px; font-size: 1.1rem; color: var(--text-primary);">Footer</h3>
+                <div class="input-group">
+                  <label for="cms-footer_tagline">Footer Tagline</label>
+                  <textarea id="cms-footer_tagline" rows="3" placeholder="Building innovative experiences..."></textarea>
+                </div>
+
+                <div class="form-actions" style="margin-top: 24px;">
+                  <div id="cms-msg" class="msg-box"></div>
+                  <button type="submit" class="btn primary-btn" id="save-cms-btn">
+                    <span>Save Content</span>
+                    <div class="loader hidden" id="cms-loader"></div>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- View: Tech Stack & Tools -->
+          <div id="tools-view" class="view-panel hidden">
+            <header class="view-header">
+              <h2>Tech Stack & Tools</h2>
+              <p>Keep track of the services and tools used to build and manage this site.</p>
+            </header>
+            
+            <div class="glass-panel form-card mb-4" style="margin-bottom: 24px;">
+              <form id="add-tool-form">
+                <h3 style="margin-bottom: 16px; color: var(--text-primary);">Add New Tool</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                  <div class="input-group">
+                    <label for="tool-name">Tool Name</label>
+                    <input type="text" id="tool-name" required placeholder="e.g. Supabase" />
+                  </div>
+                  <div class="input-group">
+                    <label for="tool-category">Category</label>
+                    <input type="text" id="tool-category" required placeholder="e.g. Backend" />
+                  </div>
+                </div>
+                <div class="input-group mt-3">
+                  <label for="tool-url">Dashboard / Service URL</label>
+                  <input type="url" id="tool-url" placeholder="https://..." />
+                </div>
+                <div class="input-group mt-3">
+                  <label for="tool-desc">Description (Optional)</label>
+                  <input type="text" id="tool-desc" placeholder="What is this used for?" />
+                </div>
+                <div class="form-actions" style="margin-top: 24px;">
+                  <div id="tool-msg" class="msg-box"></div>
+                  <button type="submit" class="btn primary-btn" id="save-tool-btn">
+                    <span>Add Tool</span>
+                    <div class="loader hidden" id="tool-loader"></div>
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div class="glass-panel" style="padding: 24px;">
+              <h3 style="margin-bottom: 16px; color: var(--text-primary);">Active Services & Tools</h3>
+              <div style="overflow-x: auto;">
+                <table style="width: 100%; text-align: left; border-collapse: collapse;">
+                  <thead>
+                    <tr style="border-bottom: 1px solid var(--border-subtle);">
+                      <th style="padding: 12px 8px; color: var(--text-secondary);">Name</th>
+                      <th style="padding: 12px 8px; color: var(--text-secondary);">Category</th>
+                      <th style="padding: 12px 8px; color: var(--text-secondary);">Description</th>
+                      <th style="padding: 12px 8px; color: var(--text-secondary);">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tools-list-body">
+                    <tr><td colspan="4" style="padding: 20px; text-align: center; color: var(--text-muted);">Loading tools...</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
 

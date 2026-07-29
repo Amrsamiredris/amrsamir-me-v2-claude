@@ -13,26 +13,46 @@ posthog.init(import.meta.env.VITE_POSTHOG_KEY, {
 
 async function initDynamicSettings() {
   try {
-    const { data, error } = await supabase.from('settings').select('*').limit(1).single();
-    if (data) {
-      if (data.whatsapp) {
+    const { data: settingsData, error: settingsError } = await supabase.from('settings').select('*').limit(1).single();
+    if (settingsData) {
+      if (settingsData.whatsapp) {
         document.querySelectorAll('a[href^="https://wa.me/"]').forEach(el => {
-          el.href = `https://wa.me/${data.whatsapp.replace(/[^0-9]/g, '')}`;
+          el.href = `https://wa.me/${settingsData.whatsapp.replace(/[^0-9]/g, '')}`;
         });
       }
-
-      if (data.linkedin) {
+      if (settingsData.linkedin) {
         document.querySelectorAll('a[href*="linkedin.com/in/"]').forEach(el => {
-          el.href = data.linkedin;
+          el.href = settingsData.linkedin;
         });
       }
-      if (data.substack) {
+      if (settingsData.substack) {
         document.querySelectorAll('iframe[src*="substack.com/embed"]').forEach(el => {
-          // Keep embed params if needed. Use background=transparent for dark mode support.
-          el.src = data.substack + '/embed?transparent=1';
+          el.src = settingsData.substack + '/embed?transparent=1';
         });
       }
     }
+
+    // Fetch CMS Content
+    const { data: cmsData, error: cmsError } = await supabase.from('cms_config').select('*');
+    if (cmsData) {
+      cmsData.forEach(item => {
+        if (item.type === 'boolean') {
+          // Toggle section visibility
+          const shouldShow = item.value === 'true';
+          const sections = document.querySelectorAll(`[data-cms-section="${item.key}"]`);
+          sections.forEach(section => {
+            section.style.display = shouldShow ? '' : 'none';
+          });
+        } else {
+          // Replace text content
+          const textNodes = document.querySelectorAll(`[data-cms="${item.key}"]`);
+          textNodes.forEach(node => {
+            node.textContent = item.value;
+          });
+        }
+      });
+    }
+
   } catch (err) {
     console.error("Could not fetch settings", err);
   }
