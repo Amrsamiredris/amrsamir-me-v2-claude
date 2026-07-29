@@ -12,10 +12,12 @@ export function initFormWatcher() {
     e.preventDefault();
     
     // Reset states
-    successEl.classList.remove('visible');
-    errorEl.textContent = '';
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
+    if (successEl) successEl.style.display = 'none';
+    if (errorEl) errorEl.textContent = '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+    }
 
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
@@ -30,16 +32,18 @@ export function initFormWatcher() {
         }]);
 
       if (!error) {
-        successEl.classList.add('visible');
+        if (successEl) successEl.style.display = 'block';
         form.reset();
       } else {
-        errorEl.textContent = error.message;
+        if (errorEl) errorEl.textContent = error.message;
       }
     } catch (error) {
-      errorEl.textContent = 'Oops! There was a network error. Please try again.';
+      if (errorEl) errorEl.textContent = 'Oops! There was a network error. Please try again.';
     } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Send Message';
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Message';
+      }
     }
   });
 }

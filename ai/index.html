@@ -206,10 +206,12 @@
 
     <div class="footer-col">
       <h3 class="footer-title">Get in Touch</h3>
-      <form class="mini-form" action="https://formspree.io/f/mqwnkvdv" method="POST">
+      <form class="mini-form" id="contact-form">
         <input type="email" name="email" placeholder="Your Email" required>
         <textarea name="message" rows="3" placeholder="How can I help you?" required></textarea>
-        <button type="submit">Send Message</button>
+        <div id="form-global-error" class="error-msg" style="color: #ef4444; font-size: 0.85rem; margin-bottom: 8px;"></div>
+        <div id="form-success" class="success-msg" style="color: #10b981; font-size: 0.85rem; margin-bottom: 8px; display: none;">Message sent successfully!</div>
+        <button type="submit" id="submit-btn">Send Message</button>
       </form>
     </div>
   </div>
