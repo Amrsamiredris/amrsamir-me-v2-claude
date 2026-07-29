@@ -36,18 +36,53 @@ async function initDynamicSettings() {
     const { data: cmsData, error: cmsError } = await supabase.from('cms_config').select('*');
     if (cmsData) {
       cmsData.forEach(item => {
-        if (item.type === 'boolean') {
-          // Toggle section visibility
+        if (item.type === 'font') {
+          const fontName = item.value;
+          if (fontName) {
+            const fontUrl = `https://fonts.googleapis.com/css2?family=${fontName.replace(/ /g, '+')}:wght@300;400;500;600;700;800&display=swap`;
+            let link = document.getElementById(`font-${item.key}`);
+            if (!link) {
+              link = document.createElement('link');
+              link.id = `font-${item.key}`;
+              link.rel = 'stylesheet';
+              document.head.appendChild(link);
+            }
+            link.href = fontUrl;
+            
+            if (item.key === 'font_primary') {
+              document.documentElement.style.setProperty('--font-sans', `"${fontName}", sans-serif`);
+            } else if (item.key === 'font_secondary') {
+              // using it for body or another variable if needed
+              document.documentElement.style.setProperty('--font-mono', `"${fontName}", monospace`);
+            }
+          }
+        } else if (item.type === 'color') {
+          if (item.key === 'color_accent') {
+            document.documentElement.style.setProperty('--primary-accent', item.value);
+            // Optional: hex to rgb conversion for glowing effects if --accent-glow expects rgb, but if it expects hex+alpha we can do it simply:
+            document.documentElement.style.setProperty('--accent-glow', item.value + '40'); 
+          }
+        } else if (item.key === 'seo_title') {
+          document.title = item.value;
+        } else if (item.key === 'seo_description') {
+          let meta = document.querySelector('meta[name="description"]');
+          if (!meta) {
+            meta = document.createElement('meta');
+            meta.name = 'description';
+            document.head.appendChild(meta);
+          }
+          meta.content = item.value;
+        } else if (item.type === 'boolean') {
           const shouldShow = item.value === 'true';
           const sections = document.querySelectorAll(`[data-cms-section="${item.key}"]`);
           sections.forEach(section => {
             section.style.display = shouldShow ? '' : 'none';
           });
         } else {
-          // Replace text content
+          // Replace text/textarea content
           const textNodes = document.querySelectorAll(`[data-cms="${item.key}"]`);
           textNodes.forEach(node => {
-            node.textContent = item.value;
+            node.innerHTML = item.value.replace(/\n/g, '<br>');
           });
         }
       });

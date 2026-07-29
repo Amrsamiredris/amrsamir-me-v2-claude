@@ -547,19 +547,119 @@ document.querySelector('[data-target="documents-view"]').addEventListener('click
 
 
 // CMS Logic
+let globalCmsData = [];
+
 async function loadCmsConfig() {
-  const { data, error } = await supabase.from('cms_config').select('*');
+  const { data, error } = await supabase.from('cms_config').select('*').order('page').order('group_name');
   if (error || !data) return;
+  globalCmsData = data;
   
-  data.forEach(item => {
-    const el = document.getElementById(`cms-${item.key}`);
-    if (el) {
-      if (item.type === 'boolean') {
-        el.checked = item.value === 'true';
-      } else {
-        el.value = item.value || '';
-      }
-    }
+  const tabsNav = document.getElementById('cms-tabs-nav');
+  const dynamicFields = document.getElementById('cms-dynamic-fields');
+  if (!tabsNav || !dynamicFields) return;
+  
+  tabsNav.innerHTML = '';
+  dynamicFields.innerHTML = '';
+  
+  // Group by page
+  const pages = [...new Set(data.map(item => item.page || 'Global'))];
+  
+  pages.forEach((page, index) => {
+    // Create Tab Button
+    const tabBtn = document.createElement('button');
+    tabBtn.type = 'button';
+    tabBtn.className = `btn ${index === 0 ? 'primary-btn' : 'secondary-btn'} cms-tab-btn`;
+    tabBtn.textContent = page;
+    tabBtn.dataset.page = page;
+    tabsNav.appendChild(tabBtn);
+    
+    // Create Tab Content
+    const tabContent = document.createElement('div');
+    tabContent.className = `cms-page-content ${index === 0 ? '' : 'hidden'}`;
+    tabContent.dataset.page = page;
+    
+    // Group by group_name within the page
+    const pageItems = data.filter(item => (item.page || 'Global') === page);
+    const groups = [...new Set(pageItems.map(item => item.group_name || 'General'))];
+    
+    groups.forEach(group => {
+      const groupHeader = document.createElement('h3');
+      groupHeader.style.cssText = 'margin-top: 24px; margin-bottom: 16px; font-size: 1.1rem; color: var(--text-primary); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;';
+      groupHeader.textContent = group;
+      tabContent.appendChild(groupHeader);
+      
+      const groupItems = pageItems.filter(item => (item.group_name || 'General') === group);
+      
+      groupItems.forEach(item => {
+        const inputGroup = document.createElement('div');
+        inputGroup.className = 'input-group';
+        
+        if (item.type === 'boolean') {
+          inputGroup.style.cssText = 'flex-direction: row; align-items: center; justify-content: space-between;';
+          inputGroup.innerHTML = `
+            <div>
+              <label for="cms-${item.key}" style="margin-bottom: 0;">${item.description || item.key}</label>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="cms-${item.key}" ${item.value === 'true' ? 'checked' : ''}>
+              <span class="slider round"></span>
+            </label>
+          `;
+        } else if (item.type === 'textarea') {
+          inputGroup.innerHTML = `
+            <label for="cms-${item.key}">${item.description || item.key}</label>
+            <textarea id="cms-${item.key}" rows="3">${item.value || ''}</textarea>
+          `;
+        } else if (item.type === 'color') {
+          inputGroup.style.cssText = 'flex-direction: row; align-items: center; gap: 12px;';
+          inputGroup.innerHTML = `
+            <label for="cms-${item.key}" style="margin-bottom: 0; flex: 1;">${item.description || item.key}</label>
+            <input type="color" id="cms-${item.key}" value="${item.value || '#3b82f6'}" style="width: 50px; height: 32px; padding: 0; border: none; border-radius: 4px; background: transparent; cursor: pointer;">
+          `;
+        } else if (item.type === 'font') {
+          const fonts = ['Inter', 'Roboto', 'Outfit', 'Playfair Display', 'Lora', 'Merriweather', 'Space Grotesk'];
+          const options = fonts.map(f => `<option value="${f}" ${item.value === f ? 'selected' : ''}>${f}</option>`).join('');
+          inputGroup.innerHTML = `
+            <label for="cms-${item.key}">${item.description || item.key}</label>
+            <select id="cms-${item.key}">
+              ${options}
+              <option value="${item.value}" ${!fonts.includes(item.value) ? 'selected' : 'hidden'}>${item.value} (Custom)</option>
+            </select>
+          `;
+        } else {
+          // text or default
+          inputGroup.innerHTML = `
+            <label for="cms-${item.key}">${item.description || item.key}</label>
+            <input type="text" id="cms-${item.key}" value="${item.value || ''}" />
+          `;
+        }
+        tabContent.appendChild(inputGroup);
+      });
+    });
+    
+    dynamicFields.appendChild(tabContent);
+  });
+  
+  // Tab click logic
+  document.querySelectorAll('.cms-tab-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelectorAll('.cms-tab-btn').forEach(b => {
+        b.classList.remove('primary-btn');
+        b.classList.add('secondary-btn');
+      });
+      btn.classList.add('primary-btn');
+      btn.classList.remove('secondary-btn');
+      
+      const targetPage = btn.dataset.page;
+      document.querySelectorAll('.cms-page-content').forEach(content => {
+        if (content.dataset.page === targetPage) {
+          content.classList.remove('hidden');
+        } else {
+          content.classList.add('hidden');
+        }
+      });
+    });
   });
 }
 
@@ -575,13 +675,18 @@ if (cmsForm) {
     loader.classList.remove('hidden');
     msg.innerHTML = '';
     
-    const updates = [
-      { key: 'hero_title', value: document.getElementById('cms-hero_title').value, type: 'text' },
-      { key: 'hero_subtitle', value: document.getElementById('cms-hero_subtitle').value, type: 'text' },
-      { key: 'show_career_timeline', value: document.getElementById('cms-show_career_timeline').checked.toString(), type: 'boolean' },
-      { key: 'show_contact_form', value: document.getElementById('cms-show_contact_form').checked.toString(), type: 'boolean' },
-      { key: 'footer_tagline', value: document.getElementById('cms-footer_tagline').value, type: 'textarea' }
-    ];
+    const updates = globalCmsData.map(item => {
+      const el = document.getElementById(`cms-${item.key}`);
+      let val = item.value;
+      if (el) {
+        if (item.type === 'boolean') {
+          val = el.checked.toString();
+        } else {
+          val = el.value;
+        }
+      }
+      return { ...item, value: val, updated_at: new Date().toISOString() };
+    });
     
     const { error } = await supabase.from('cms_config').upsert(updates);
     

@@ -352,36 +352,14 @@
             
             <div class="glass-panel form-card">
               <form id="cms-form">
-                <h3 style="margin-bottom: 16px; font-size: 1.1rem; color: var(--text-primary);">Hero Section</h3>
-                <div class="input-group">
-                  <label for="cms-hero_title">Hero Title</label>
-                  <input type="text" id="cms-hero_title" placeholder="Amr Samir Edris" />
-                </div>
-                <div class="input-group">
-                  <label for="cms-hero_subtitle">Hero Subtitle</label>
-                  <input type="text" id="cms-hero_subtitle" placeholder="Select a persona below to explore." />
+                <!-- Dynamic Tabs Container -->
+                <div class="cms-tabs" id="cms-tabs-nav" style="display: flex; gap: 12px; margin-bottom: 24px; overflow-x: auto; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">
+                  <!-- Tabs will be injected here via JS -->
                 </div>
 
-                <h3 style="margin-top: 32px; margin-bottom: 16px; font-size: 1.1rem; color: var(--text-primary);">Section Visibility</h3>
-                <div class="input-group" style="flex-direction: row; align-items: center; justify-content: space-between;">
-                  <label for="cms-show_career_timeline" style="margin-bottom: 0;">Show Career Timeline</label>
-                  <label class="toggle-switch">
-                    <input type="checkbox" id="cms-show_career_timeline">
-                    <span class="slider round"></span>
-                  </label>
-                </div>
-                <div class="input-group" style="flex-direction: row; align-items: center; justify-content: space-between;">
-                  <label for="cms-show_contact_form" style="margin-bottom: 0;">Show Newsletter/Contact Form</label>
-                  <label class="toggle-switch">
-                    <input type="checkbox" id="cms-show_contact_form">
-                    <span class="slider round"></span>
-                  </label>
-                </div>
-
-                <h3 style="margin-top: 32px; margin-bottom: 16px; font-size: 1.1rem; color: var(--text-primary);">Footer</h3>
-                <div class="input-group">
-                  <label for="cms-footer_tagline">Footer Tagline</label>
-                  <textarea id="cms-footer_tagline" rows="3" placeholder="Building innovative experiences..."></textarea>
+                <!-- Dynamic Content Container -->
+                <div id="cms-dynamic-fields">
+                  <!-- Fields will be injected here via JS -->
                 </div>
 
                 <div class="form-actions" style="margin-top: 24px;">
