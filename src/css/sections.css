@@ -180,39 +180,4 @@
   background: var(--bg-secondary);
 }
 
-/* ── Footer ────────────────────────────────────────── */
-.footer {
-  padding: 40px 0;
-  border-top: 1px solid var(--border-subtle);
-  background: var(--bg-secondary);
-}
-.footer-inner {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  align-items: center;
-  text-align: center;
-}
-@media (min-width: 640px) {
-  .footer-inner {
-    flex-direction: row;
-    justify-content: space-between;
-    text-align: left;
-  }
-}
-.footer-copy {
-  font-size: var(--text-sm);
-  color: var(--text-muted);
-}
-.footer-links {
-  display: flex;
-  gap: 24px;
-}
-.footer-links a {
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
-}
-.footer-links a:hover {
-  color: var(--text-primary);
-  text-decoration: underline;
-}
+
