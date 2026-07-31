@@ -19,13 +19,12 @@
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
     z-index: -2;
     pointer-events: none;
     user-select: none;
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1.1);
-    transition: opacity 0.1s ease-out, transform 0.1s ease-out;
+    transform: translate3d(-50%, -50%, 0) scale(1.1);
+    will-change: transform, opacity;
   }
   .watermark-bg .ascii-art {
     font-size: clamp(3px, 1.4vw, 16px);
@@ -180,7 +179,7 @@
       const scale = 1.1 - (progress * 0.1);
       
       watermark.style.opacity = opacity.toFixed(3);
-      watermark.style.transform = `translate(-50%, -50%) scale(${scale.toFixed(3)})`;
+      watermark.style.transform = `translate3d(-50%, -50%, 0) scale(${scale.toFixed(3)})`;
     }, { passive: true });
   });
 </script>
