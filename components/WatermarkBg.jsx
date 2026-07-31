@@ -14,20 +14,44 @@ export default function WatermarkBg() {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  // Lock opacity at a maximum of 0.06 so it remains a subtle watermark
-  const opacity = useTransform(scrollY, [0, vh], [0.06, 0.01]);
-  const scale = useTransform(scrollY, [0, vh], [1.1, 1.0]);
-
-  return (
-    <div className="watermark-bg" aria-hidden="true">
-      <motion.div style={{ opacity, scale, originX: 0.5, originY: 0.5 }}>
-        <pre className="ascii-art">
-          {`  ██████╗ ██████╗ ███╗   ███╗██╗███╗   ██╗ ██████╗    ███████╗ ██████╗  ██████╗ ███╗   ██╗
+  // Extremely subtle opacity to not break readability
+  const baseOpacity = useTransform(scrollY, [0, vh], [0.03, 0.01]);
+  const highlightOpacity = useTransform(scrollY, [0, vh], [0.15, 0.02]);
+  
+  const asciiArt = `  ██████╗ ██████╗ ███╗   ███╗██╗███╗   ██╗ ██████╗    ███████╗ ██████╗  ██████╗ ███╗   ██╗
  ██╔════╝██╔═══██╗████╗ ████║██║████╗  ██║██╔════╝    ██╔════╝██╔═══██╗██╔═══██╗████╗  ██║
  ██║     ██║   ██║██╔████╔██║██║██╔██╗ ██║██║  ███╗   ███████╗██║   ██║██║   ██║██╔██╗ ██║
  ██║     ██║   ██║██║╚██╔╝██║██║██║╚██╗██║██║   ██║   ╚════██║██║   ██║██║   ██║██║╚██╗██║
  ╚██████╗╚██████╔╝██║ ╚═╝ ██║██║██║ ╚████║╚██████╔╝   ███████║╚██████╔╝╚██████╔╝██║ ╚████║
-  ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝    ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝`}
+  ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝    ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝`;
+
+  return (
+    <div className="watermark-bg" aria-hidden="true" style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate3d(-50%, -50%, 0)', zIndex: -2, pointerEvents: 'none', userSelect: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      
+      {/* Base dark layer */}
+      <motion.div style={{ opacity: baseOpacity, originX: 0.5, originY: 0.5 }}>
+        <pre className="ascii-art" style={{ color: 'var(--text-muted)' }}>
+          {asciiArt}
+        </pre>
+      </motion.div>
+
+      {/* Animated bright overlay (skills.sh style reveal) */}
+      <motion.div 
+        style={{ 
+          opacity: highlightOpacity,
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          originX: 0.5, originY: 0.5
+        }}
+        initial={{ clipPath: 'inset(0 100% 0 0)' }}
+        animate={{ clipPath: 'inset(0 0% 0 0)' }}
+        transition={{ duration: 2, ease: "easeInOut", repeat: Infinity, repeatType: "mirror", repeatDelay: 1 }}
+      >
+        <pre className="ascii-art" style={{ color: 'var(--text-primary)' }}>
+          {asciiArt}
         </pre>
       </motion.div>
     </div>
