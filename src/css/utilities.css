@@ -246,14 +246,18 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate3d(-50%, -50%, 0);
   z-index: -2;
   pointer-events: none;
   user-select: none;
-  opacity: 0.08;
-  /* Removed 'transform' from transition to prevent jitter/ghosting on scroll */
-  transition: opacity 0.1s ease-out;
+  /* Aggressive GPU acceleration to fix Safari ghosting/tearing */
   will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
 }
 .watermark-bg .ascii-art {
   font-family: var(--font-mono);
@@ -262,4 +266,6 @@
   white-space: pre;
   color: var(--text-primary);
   margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

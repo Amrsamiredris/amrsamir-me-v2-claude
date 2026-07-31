@@ -1,47 +1,34 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 export default function WatermarkBg() {
-  const watermarkRef = useRef(null);
-
+  const { scrollY } = useScroll();
+  const [vh, setVh] = useState(800);
+  
   useEffect(() => {
-    const watermark = watermarkRef.current;
-    if (!watermark) return;
-
-    const onScroll = () => {
-      const scrollY = window.scrollY;
-      const vh = window.innerHeight;
-      
-      let progress = scrollY / vh;
-      if (progress > 1) progress = 1;
-      
-      const opacity = 1 - (progress * (1 - 0.08));
-      const scale = 1.1 - (progress * 0.1);
-      
-      watermark.style.opacity = opacity.toFixed(3);
-      watermark.style.transform = `translate3d(-50%, -50%, 0) scale(${scale.toFixed(3)})`;
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    // Trigger once on mount
-    onScroll();
-
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-    };
+    setVh(window.innerHeight);
+    const onResize = () => setVh(window.innerHeight);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
   }, []);
 
+  const opacity = useTransform(scrollY, [0, vh], [1, 0.08]);
+  const scale = useTransform(scrollY, [0, vh], [1.1, 1.0]);
+
   return (
-    <div ref={watermarkRef} className="watermark-bg" aria-hidden="true">
-      <pre className="ascii-art">
-        {`  ██████╗ ██████╗ ███╗   ███╗██╗███╗   ██╗ ██████╗    ███████╗ ██████╗  ██████╗ ███╗   ██╗
+    <div className="watermark-bg" aria-hidden="true">
+      <motion.div style={{ opacity, scale, originX: 0.5, originY: 0.5 }}>
+        <pre className="ascii-art">
+          {`  ██████╗ ██████╗ ███╗   ███╗██╗███╗   ██╗ ██████╗    ███████╗ ██████╗  ██████╗ ███╗   ██╗
  ██╔════╝██╔═══██╗████╗ ████║██║████╗  ██║██╔════╝    ██╔════╝██╔═══██╗██╔═══██╗████╗  ██║
  ██║     ██║   ██║██╔████╔██║██║██╔██╗ ██║██║  ███╗   ███████╗██║   ██║██║   ██║██╔██╗ ██║
  ██║     ██║   ██║██║╚██╔╝██║██║██║╚██╗██║██║   ██║   ╚════██║██║   ██║██║   ██║██║╚██╗██║
  ╚██████╗╚██████╔╝██║ ╚═╝ ██║██║██║ ╚████║╚██████╔╝   ███████║╚██████╔╝╚██████╔╝██║ ╚████║
   ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝    ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝`}
-      </pre>
+        </pre>
+      </motion.div>
     </div>
   );
 }
