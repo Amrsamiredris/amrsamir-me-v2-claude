@@ -39,8 +39,8 @@
 /* Glassmorphic utilities */
 .glass-panel {
   background: var(--bg-secondary);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.5);
@@ -48,8 +48,8 @@
 
 .glass-card {
   background: var(--bg-secondary);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
@@ -59,7 +59,7 @@
 .glass-card:hover {
   transform: translateY(-4px);
   border-color: var(--accent);
-  box-shadow: 0 12px 40px var(--accent-glow);
+  box-shadow: 0 12px 40px var(--accent-glow), inset 0 0 10px rgba(0, 212, 255, 0.1);
 }
 
 /* Sections */
@@ -166,29 +166,27 @@
 
 .watermark-bg {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
   width: 100vw;
   height: 100vh;
+  transform: translate3d(-50%, -50%, 0);
   z-index: -2;
   pointer-events: none;
-  overflow: hidden;
+  user-select: none;
+  mix-blend-mode: screen;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.glow-orb {
-  position: absolute;
-  width: 800px;
-  height: 800px;
-  border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.15;
-}
-.glow-orb-1 {
-  top: -200px;
-  left: -200px;
-  background: var(--accent);
-}
-.glow-orb-2 {
-  bottom: -200px;
-  right: -200px;
-  background: rgba(255, 255, 255, 0.5);
+.watermark-bg .ascii-art {
+  font-family: var(--font-mono) !important;
+  font-size: clamp(3px, 1.4vw, 16px);
+  line-height: 1.15;
+  white-space: pre !important;
+  background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
 }
