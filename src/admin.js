@@ -778,5 +778,6 @@ if (addToolForm) {
 }
 
 
-// Start
-init();
+export function startAdmin() {
+  init();
+}
