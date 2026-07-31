@@ -240,3 +240,26 @@
   border-radius: 4px;
   color: var(--text-muted);
 }
+
+/* Watermark Background */
+.watermark-bg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -2;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.08;
+  /* Removed 'transform' from transition to prevent jitter/ghosting on scroll */
+  transition: opacity 0.1s ease-out;
+  will-change: transform, opacity;
+}
+.watermark-bg .ascii-art {
+  font-family: var(--font-mono);
+  font-size: clamp(3px, 1.4vw, 16px);
+  line-height: 1.15;
+  white-space: pre;
+  color: var(--text-primary);
+  margin: 0;
+}
