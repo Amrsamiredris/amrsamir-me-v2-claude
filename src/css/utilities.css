@@ -250,20 +250,13 @@
   z-index: -2;
   pointer-events: none;
   user-select: none;
-  /* Aggressive GPU acceleration to fix Safari ghosting/tearing */
   will-change: transform, opacity;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform-style: preserve-3d;
-  -webkit-transform-style: preserve-3d;
-  perspective: 1000px;
-  -webkit-perspective: 1000px;
 }
 .watermark-bg .ascii-art {
-  font-family: var(--font-mono);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
   font-size: clamp(3px, 1.4vw, 16px);
   line-height: 1.15;
-  white-space: pre;
+  white-space: pre !important;
   color: var(--text-primary);
   margin: 0;
   -webkit-font-smoothing: antialiased;
