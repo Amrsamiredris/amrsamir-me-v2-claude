@@ -1,9 +1,14 @@
 /* ═══════════════════════════════════════════════════════
-   HERO (ASCII Art Style)
+   HERO 
    ═══════════════════════════════════════════════════════ */
 .hero {
-  padding: 60px 0 80px;
-  border-bottom: 1px solid var(--border-subtle);
+  padding: 120px 0 80px;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
 }
 
 .hero-grid {
@@ -11,30 +16,8 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 40px;
-}
-
-.ascii-container {
-  overflow-x: auto;
-  padding-bottom: 16px;
-  display: flex;
-  justify-content: center;
-}
-
-.ascii-art {
-  font-family: var(--font-mono);
-  font-size: clamp(3px, 1.3vw, 12px); 
-  line-height: 1.15;
-  white-space: pre;
-  color: var(--text-secondary);
-  user-select: none;
-  margin: 0 auto;
-}
-
-@media (min-width: 1024px) {
-  .ascii-art {
-    font-size: 12px;
-  }
+  gap: 32px;
+  width: 100%;
 }
 
 .hero-content {
@@ -42,50 +25,54 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 10;
 }
 
 .hero-subtitle {
-  font-family: var(--font-mono);
-  font-size: var(--text-xl);
-  font-weight: var(--font-semibold);
+  font-family: var(--font-sans);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
   color: var(--text-primary);
-  margin-bottom: 16px;
-  line-height: 1.4;
+  margin-bottom: 24px;
+  line-height: 1.2;
   text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 @media (min-width: 640px) {
   .hero-subtitle {
-    font-size: var(--text-2xl);
+    font-size: clamp(3rem, 5vw, 4.5rem);
   }
 }
 
-/* Rotating role badge */
+/* Rotating role badge (modernized) */
 .role-rotator {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  font-size: 0.92rem;
-  font-weight: var(--font-bold, 700);
-  color: var(--bg-primary);
-  background: var(--text-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--accent);
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-glow);
   padding: 8px 24px;
-  border-radius: var(--radius-sm);
-  margin-bottom: 24px;
+  border-radius: var(--radius-full);
+  margin-bottom: 32px;
   overflow: hidden;
   position: relative;
-  min-width: 220px;
-  height: 42px;
+  min-width: 260px;
+  height: 44px;
+  backdrop-filter: blur(8px);
 }
 .role-rotator .role-text {
   white-space: nowrap;
-  transition: opacity 0.3s, transform 0.3s;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .role-rotator .role-text.out {
   opacity: 0;
-  transform: translateY(-14px);
+  transform: translateY(-20px);
 }
 .role-rotator .role-text.in {
   opacity: 1;
@@ -93,10 +80,10 @@
 }
 
 .hero-desc {
-  font-size: var(--text-base);
+  font-size: var(--text-lg);
   color: var(--text-secondary);
-  max-width: 600px;
-  margin-bottom: 40px;
+  max-width: 680px;
+  margin-bottom: 48px;
   line-height: 1.6;
   text-align: center;
 }
@@ -106,7 +93,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .hero-socials {
@@ -118,16 +105,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: var(--bg-secondary);
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border-strong);
   color: var(--text-secondary);
-  transition: all var(--transition-fast);
+  transition: all var(--transition-normal);
+  backdrop-filter: blur(8px);
 }
 .social-icon:hover {
-  background: var(--text-primary);
-  color: var(--bg-primary);
-  border-color: var(--text-primary);
+  background: var(--accent-dim);
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px var(--accent-glow);
 }

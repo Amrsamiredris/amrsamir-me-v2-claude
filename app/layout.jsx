@@ -58,9 +58,6 @@ export default async function RootLayout({ children }) {
     }
   });
 
-  // Inject user settings context if needed (e.g. for footer links)
-  // For now, pass to client via a script or context if deeply needed, but typically layout can just render it.
-
   return (
     <html lang="en">
       <head>
@@ -78,13 +75,23 @@ export default async function RootLayout({ children }) {
         <BackgroundCanvas />
         
         {/* Navigation */}
-        <nav className="nav">
-          <div className="container nav-inner">
+        <header className="nav" style={{
+          position: 'sticky', 
+          top: 0, 
+          zIndex: 50, 
+          background: 'rgba(5, 5, 5, 0.7)', 
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          borderBottom: '1px solid var(--border-strong)'
+        }}>
+          <div className="container nav-inner" style={{ height: 'var(--nav-height)', display: 'flex', alignItems: 'center' }}>
             <div className="nav-left">
-              <a href="/" className="nav-logo">amrsamir.me</a>
+              <a href="/" className="nav-logo" style={{ fontWeight: 'var(--font-bold)', fontSize: 'var(--text-lg)', color: 'var(--text-primary)', textDecoration: 'none', letterSpacing: '-0.02em' }}>
+                amrsamir.me
+              </a>
             </div>
           </div>
-        </nav>
+        </header>
 
         {children}
 

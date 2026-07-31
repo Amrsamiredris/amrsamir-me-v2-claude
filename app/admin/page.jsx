@@ -24,30 +24,8 @@ export default function AdminPage() {
       <div className="bg-shape shape3"></div>
 
       <div id="app" dangerouslySetInnerHTML={{ __html: `
-        <!-- Login Section (Visible by default) -->
-        <div id="login-section" class="glass-container auth-box">
-          <div class="logo">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          </div>
-          <h2>Control Panel</h2>
-          <p class="subtitle">Secure access required</p>
-          
-          <form id="login-form">
-            <div class="input-group">
-              <label for="email">Email Address</label>
-              <input type="email" id="email" required placeholder="you@amrsamir.me" />
-            </div>
-            <div class="input-group">
-              <label for="password">Password</label>
-              <input type="password" id="password" required placeholder="••••••••" />
-            </div>
-            <div id="login-error" class="error-msg hidden"></div>
-            <button type="submit" class="btn primary-btn" id="login-btn">
-              <span>Sign In</span>
-              <div class="loader hidden" id="login-loader"></div>
-            </button>
-          </form>
-        </div>
+        <!-- Login Section (Moved to /login, kept as empty div to prevent JS errors) -->
+        <div id="login-section" class="hidden"></div>
 
         <!-- Dashboard Section (Hidden by default) -->
         <div id="dashboard-section" class="dashboard-layout hidden">

@@ -14,21 +14,20 @@ export default function WatermarkBg() {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  const opacity = useTransform(scrollY, [0, vh], [1, 0.08]);
-  const scale = useTransform(scrollY, [0, vh], [1.1, 1.0]);
+  const y1 = useTransform(scrollY, [0, vh], [0, vh * 0.3]);
+  const y2 = useTransform(scrollY, [0, vh], [0, -vh * 0.2]);
+  const opacity = useTransform(scrollY, [0, vh], [0.8, 0.3]);
 
   return (
-    <div className="watermark-bg" aria-hidden="true">
-      <motion.div style={{ opacity, scale, originX: 0.5, originY: 0.5 }}>
-        <pre className="ascii-art">
-          {`  ██████╗ ██████╗ ███╗   ███╗██╗███╗   ██╗ ██████╗    ███████╗ ██████╗  ██████╗ ███╗   ██╗
- ██╔════╝██╔═══██╗████╗ ████║██║████╗  ██║██╔════╝    ██╔════╝██╔═══██╗██╔═══██╗████╗  ██║
- ██║     ██║   ██║██╔████╔██║██║██╔██╗ ██║██║  ███╗   ███████╗██║   ██║██║   ██║██╔██╗ ██║
- ██║     ██║   ██║██║╚██╔╝██║██║██║╚██╗██║██║   ██║   ╚════██║██║   ██║██║   ██║██║╚██╗██║
- ╚██████╗╚██████╔╝██║ ╚═╝ ██║██║██║ ╚████║╚██████╔╝   ███████║╚██████╔╝╚██████╔╝██║ ╚████║
-  ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝    ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝`}
-        </pre>
-      </motion.div>
+    <div className="watermark-bg" aria-hidden="true" style={{ mixBlendMode: 'screen' }}>
+      <motion.div 
+        className="glow-orb glow-orb-1" 
+        style={{ y: y1, opacity }}
+      />
+      <motion.div 
+        className="glow-orb glow-orb-2" 
+        style={{ y: y2, opacity }}
+      />
     </div>
   );
 }
