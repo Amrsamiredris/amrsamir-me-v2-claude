@@ -2,23 +2,22 @@
    TOKENS (Premium Glassmorphism Theme)
    ═══════════════════════════════════════════════════════ */
 :root {
-  /* Colors - Cyber-Futuristic Dark Mode */
-  --bg-primary: #0A0A10;
-  --bg-secondary: rgba(20, 20, 25, 0.4);
+  /* Colors - Premium Dark Mode */
+  --bg-primary: #050505;
+  --bg-secondary: rgba(20, 20, 22, 0.6);
   --bg-tertiary: rgba(30, 30, 35, 0.4);
   
   --text-primary: #ffffff;
   --text-secondary: #a1a1aa;
-  --text-muted: #6b7280;
+  --text-muted: #52525b;
 
   --border-subtle: rgba(255, 255, 255, 0.05);
   --border-strong: rgba(255, 255, 255, 0.1);
   --border-active: rgba(255, 255, 255, 0.2);
 
-  --accent: #00D4FF; /* Electric Cyan */
-  --accent-secondary: #9D4EDD; /* Vibrant Purple */
-  --accent-glow: rgba(0, 212, 255, 0.3);
-  --accent-dim: rgba(0, 212, 255, 0.1);
+  --accent: #3b82f6; /* Modern Blue, can be overridden by CMS */
+  --accent-glow: rgba(59, 130, 246, 0.2);
+  --accent-dim: rgba(59, 130, 246, 0.1);
 
   /* Typography */
   --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;

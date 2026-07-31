@@ -59,7 +59,7 @@
 .glass-card:hover {
   transform: translateY(-4px);
   border-color: var(--accent);
-  box-shadow: 0 12px 40px var(--accent-glow), inset 0 0 10px rgba(0, 212, 255, 0.1);
+  box-shadow: 0 12px 40px var(--accent-glow);
 }
 
 /* Sections */
@@ -184,9 +184,7 @@
   font-size: clamp(3px, 1.4vw, 16px);
   line-height: 1.15;
   white-space: pre !important;
-  background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--accent);
   margin: 0;
   -webkit-font-smoothing: antialiased;
 }
