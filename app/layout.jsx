@@ -71,7 +71,6 @@ export default async function RootLayout({ children }) {
         )}
       </head>
       <body>
-        <WatermarkBg />
         <BackgroundCanvas />
         
         {/* Navigation Hidden for Coming Soon */}
