@@ -1,4 +1,4 @@
-export const revalidate = 60;
+"use client";
 
 export default function Home() {
   return (
