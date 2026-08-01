@@ -1,72 +1,66 @@
-import { supabase } from '../src/supabaseClient';
-import Footer from '../components/Footer';
-import PersonaCards from '../components/PersonaCards';
-
 export const revalidate = 60;
 
-export default async function Home() {
-  let cmsData = [];
-  let settingsData = null;
-
-  try {
-    const [cmsRes, settingsRes] = await Promise.all([
-      supabase.from('cms_config').select('*'),
-      supabase.from('settings').select('*').limit(1).single()
-    ]);
-    if (cmsRes.data) cmsData = cmsRes.data;
-    if (settingsRes.data) settingsData = settingsRes.data;
-  } catch (error) {
-    console.error('Error fetching data for Home:', error);
-  }
-  
-  const getCms = (key, defaultVal) => {
-    const item = cmsData?.find(d => d.key === key);
-    return item ? item.value : defaultVal;
-  };
-
-  const showNewsletter = getCms('show_contact_form', 'true') === 'true';
-
+export default function Home() {
   return (
-    <>
-      <main id="main-content" className="container" style={{ position: 'relative', zIndex: 10, paddingBottom: '40px' }}>
+    <main style={{ 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center', 
+      minHeight: '100vh', 
+      position: 'relative', 
+      zIndex: 10,
+      padding: '20px'
+    }}>
+      <div className="glass-card" style={{ 
+        padding: '40px', 
+        textAlign: 'center', 
+        maxWidth: '400px', 
+        width: '100%',
+        background: 'rgba(10, 10, 10, 0.8)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        border: '1px solid var(--border-strong)',
+        borderRadius: 'var(--radius-lg)'
+      }}>
+        <h2 style={{ 
+          margin: '0 0 24px 0', 
+          fontSize: '1.5rem', 
+          fontFamily: 'var(--font-sans)', 
+          fontWeight: 600, 
+          color: 'var(--text-primary)' 
+        }}>
+          Amr Samir Edris
+        </h2>
         
-        <section className="hero">
-          <div className="hero-grid">
-            <div className="hero-content">
-              <h1 className="hero-subtitle" dangerouslySetInnerHTML={{ __html: getCms('hero_title', 'Amr Samir Edris').replace(/\\n/g, '<br>') }} />
-              <p className="hero-desc" dangerouslySetInnerHTML={{ __html: getCms('hero_subtitle', 'Select a persona below to explore.').replace(/\\n/g, '<br>') }} />
-            </div>
-          </div>
-        </section>
-
-        <section className="section" style={{ paddingTop: 0 }}>
-          <PersonaCards />
-        </section>
-
-        {/* Newsletter Section */}
-        {showNewsletter && (
-          <section className="section" id="newsletter">
-            <h2 className="section-title">Newsletter</h2>
-            <div className="contact-form" style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <p style={{ color: 'var(--text-secondary)', marginBottom: '32px' }}>Subscribe to my Substack newsletter to get updates across Events, Marketing, and Tech.</p>
-              
-              <div className="glass-panel" style={{ width: '100%', padding: '16px', borderRadius: 'var(--radius-lg)' }}>
-                <iframe 
-                  src={`${settingsData?.substack || 'https://amrsamiredris.substack.com'}/embed?transparent=1`} 
-                  width="100%" 
-                  height="320" 
-                  style={{ border: 0, background: 'transparent', maxWidth: '480px' }} 
-                  frameBorder="0" 
-                  scrolling="no">
-                </iframe>
-              </div>
-            </div>
-          </section>
-        )}
-
-      </main>
-
-      <Footer settingsData={settingsData} />
-    </>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <a href="mailto:contact@amrsamir.me" style={{ 
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px',
+            color: 'var(--text-secondary)', textDecoration: 'none', transition: 'color 0.2s',
+            fontFamily: 'var(--font-mono)', fontSize: '0.9rem'
+          }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--text-primary)'} onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            contact@amrsamir.me
+          </a>
+          
+          <a href="https://wa.me/971507095867" target="_blank" rel="noopener noreferrer" style={{ 
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px',
+            color: 'var(--text-secondary)', textDecoration: 'none', transition: 'color 0.2s',
+            fontFamily: 'var(--font-mono)', fontSize: '0.9rem'
+          }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--text-primary)'} onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            +971 50 709 5867
+          </a>
+          
+          <a href="https://linkedin.com/in/amrsamiredris" target="_blank" rel="noopener noreferrer" style={{ 
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px',
+            color: 'var(--text-secondary)', textDecoration: 'none', transition: 'color 0.2s',
+            fontFamily: 'var(--font-mono)', fontSize: '0.9rem'
+          }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--text-primary)'} onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+            linkedin/amrsamiredris
+          </a>
+        </div>
+      </div>
+    </main>
   );
 }

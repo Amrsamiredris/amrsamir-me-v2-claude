@@ -74,24 +74,7 @@ export default async function RootLayout({ children }) {
         <WatermarkBg />
         <BackgroundCanvas />
         
-        {/* Navigation */}
-        <header className="nav" style={{
-          position: 'sticky', 
-          top: 0, 
-          zIndex: 50, 
-          background: 'rgba(5, 5, 5, 0.7)', 
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          borderBottom: '1px solid var(--border-strong)'
-        }}>
-          <div className="container nav-inner" style={{ height: 'var(--nav-height)', display: 'flex', alignItems: 'center' }}>
-            <div className="nav-left">
-              <a href="/" className="nav-logo" style={{ fontWeight: 'var(--font-bold)', fontSize: 'var(--text-lg)', color: 'var(--text-primary)', textDecoration: 'none', letterSpacing: '-0.02em' }}>
-                amrsamir.me
-              </a>
-            </div>
-          </div>
-        </header>
+        {/* Navigation Hidden for Coming Soon */}
 
         {children}
 
