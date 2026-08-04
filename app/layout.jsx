@@ -5,6 +5,11 @@ import CommandPalette from '../components/CommandPalette';
 import ThemeToggle from '../components/ThemeToggle';
 import BackgroundAnimation from '../components/BackgroundAnimation';
 
+import { Inter, Space_Grotesk } from 'next/font/google';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space' });
+
 export const metadata = {
   title: 'Amr Samir Edris',
   description: 'Building innovative experiences across Events, Marketing, and AI Tech.',
@@ -39,41 +44,13 @@ export default async function RootLayout({ children }) {
     console.error('Error fetching layout data:', err);
   }
 
-  // Process CSS variables and fonts
-  let customStyle = '';
-  let fontLinks = [];
-
-  // Enforce correct accent colors, ignoring generic blue from CMS if present
-  let finalAccentLight = '#1E7F8C';
-  let finalAccentDark = '#3FB8C4';
-  
-  cmsData.forEach((item) => {
-    if (item.type === 'font' && item.value) {
-      const fontName = item.value;
-      const fontUrl = `https://fonts.googleapis.com/css2?family=${fontName.replace(/ /g, '+')}:wght@300;400;500;600;700;800&display=swap`;
-      if (!fontLinks.includes(fontUrl)) fontLinks.push(fontUrl);
-      
-      if (item.key === 'font_primary') {
-        customStyle += `--font-sans: "${fontName}", sans-serif;\n`;
-      } else if (item.key === 'font_secondary') {
-        customStyle += `--font-mono: "${fontName}", monospace;\n`;
-      }
-    } else if (item.type === 'color') {
-      if (item.key === 'color_accent') {
-        // If CMS has a generic blue or something unintended, we still enforce the spec'd teal
-        // Otherwise use the CMS value if it's meant to be dynamic, but since we are correcting it:
-        if (item.value !== '#0070f3' && item.value !== 'blue' && item.value !== '#1E7F8C') {
-           finalAccentLight = item.value; // Trust CMS if it's a completely different custom color
-        }
-      }
-    }
-  });
-
-  // Inject the final accent colors
-  customStyle += `--primary-accent: ${finalAccentLight};\n`;
-  customStyle += `--accent-glow: ${finalAccentLight}40;\n`;
-  customStyle += `--primary-accent-dark: ${finalAccentDark};\n`;
-  customStyle += `--accent-glow-dark: ${finalAccentDark}40;\n`;
+  // Force accent colors, completely ignoring the CMS.
+  let customStyle = `
+    --primary-accent: #1E7F8C;
+    --accent-glow: #1E7F8C40;
+    --primary-accent-dark: #3FB8C4;
+    --accent-glow-dark: #3FB8C440;
+  `;
 
   // Theme Init Script (Blocking FOUC)
   const themeScript = `
@@ -89,12 +66,9 @@ export default async function RootLayout({ children }) {
   `;
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        {fontLinks.map((url, i) => (
-          <link key={i} href={url} rel="stylesheet" />
-        ))}
         {customStyle && (
           <style dangerouslySetInnerHTML={{ __html: `:root { \n${customStyle}\n}` }} />
         )}

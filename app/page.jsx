@@ -35,9 +35,26 @@ export default async function Home() {
           
           <AnimatedLogo />
 
-          <h1 className="hero-subtitle" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontFamily: 'var(--font-mono)', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '1rem', letterSpacing: '-0.03em' }} dangerouslySetInnerHTML={{ __html: getCms('hero_title', 'Amr Samir Edris').replace(/\\n/g, '<br>') }} />
-          <p className="hero-desc" style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto' }} dangerouslySetInnerHTML={{ __html: getCms('hero_subtitle', 'Select a persona below to explore.').replace(/\\n/g, '<br>') }} />
+          <h1 className="hero-subtitle" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontFamily: 'var(--font-mono)', fontWeight: 500, color: 'var(--ink)', marginBottom: '1rem', letterSpacing: '-0.03em' }} dangerouslySetInnerHTML={{ __html: getCms('hero_title', 'Amr Samir Edris').replace(/\\n/g, '<br>') }} />
+          <p className="hero-desc" style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto', fontFamily: 'var(--font-mono)' }}>
+            <span dangerouslySetInnerHTML={{ __html: getCms('hero_subtitle', 'Select a persona below to explore.').replace(/\\n/g, '<br>') }} />
+            <span className="blinking-cursor">_</span>
+          </p>
         </section>
+
+        <style dangerouslySetInnerHTML={{ __html: `
+          .blinking-cursor {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--accent);
+            animation: blink 1s step-end infinite;
+            margin-left: 4px;
+          }
+          @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+          }
+        `}} />
 
         <section className="section" style={{ paddingTop: '40px', flex: 1 }}>
           <PersonaCards />
