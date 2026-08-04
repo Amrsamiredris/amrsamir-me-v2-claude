@@ -7,8 +7,8 @@ import BackgroundAnimation from '../components/BackgroundAnimation';
 
 import { Inter, Space_Grotesk } from 'next/font/google';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
-const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space' });
+const inter = Inter({ subsets: ['latin'], variable: '--next-font-sans' });
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--next-font-space' });
 
 export const metadata = {
   title: 'Amr Samir Edris',

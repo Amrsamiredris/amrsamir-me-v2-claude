@@ -125,6 +125,16 @@ export default function BackgroundAnimation() {
           100% { transform: translate(20%, -30%) rotate(45deg); }
         }
 
+        .wave-line-drift {
+          animation: driftWave 25s infinite linear;
+          transform-origin: center;
+        }
+
+        @keyframes driftWave {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-1000px); }
+        }
+
         @media (prefers-reduced-motion: reduce) {
           .shape-1, .shape-2, .shape-3 {
             animation: none !important;

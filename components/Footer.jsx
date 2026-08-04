@@ -33,6 +33,44 @@ export default function Footer({ settingsData }) {
 
   return (
     <footer className="footer">
+      <div className="footer-marquee">
+        <div className="marquee-content">
+          <span>// EVENTS // MARKETING // AI & TECH</span>
+          <span>// EVENTS // MARKETING // AI & TECH</span>
+          <span>// EVENTS // MARKETING // AI & TECH</span>
+          <span>// EVENTS // MARKETING // AI & TECH</span>
+          <span>// EVENTS // MARKETING // AI & TECH</span>
+          <span>// EVENTS // MARKETING // AI & TECH</span>
+        </div>
+      </div>
+      <style jsx>{`
+        .footer-marquee {
+          width: 100%;
+          overflow: hidden;
+          background: var(--bg-secondary);
+          border-top: 1px solid var(--line);
+          border-bottom: 1px solid var(--line);
+          padding: 8px 0;
+          margin-bottom: 40px;
+          display: flex;
+          align-items: center;
+        }
+        .marquee-content {
+          display: flex;
+          white-space: nowrap;
+          animation: scrollMarquee 20s linear infinite;
+        }
+        .marquee-content span {
+          font-family: var(--font-mono);
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+          padding: 0 16px;
+        }
+        @keyframes scrollMarquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
       <div className="container footer-inner">
         <div className="footer-col">
           <h3 className="footer-title">Amr Samir Edris</h3>
