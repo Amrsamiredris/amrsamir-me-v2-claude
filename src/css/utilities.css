@@ -187,6 +187,7 @@
   position: fixed;
   bottom: 24px;
   right: 24px;
+  z-index: 1000;
   width: 44px;
   height: 44px;
   border-radius: 50%;

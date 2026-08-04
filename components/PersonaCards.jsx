@@ -35,28 +35,28 @@ export default function PersonaCards() {
       animate="visible"
     >
       {/* Events Persona */}
-      <motion.article variants={cardVariants} className="project-card glass-card">
+      <motion.article variants={cardVariants} className="project-card reveal visible">
         <h3 className="project-name">Events & Project Management</h3>
         <p className="project-desc">Mega events, government productions, and corporate activations.</p>
-        <Link href="/events" className="cmd-btn">
+        <Link href="/events" className="cmd-btn" style={{ display: 'inline-block', marginTop: '16px' }}>
           Explore Events
         </Link>
       </motion.article>
 
       {/* Marketing Persona */}
-      <motion.article variants={cardVariants} className="project-card glass-card">
+      <motion.article variants={cardVariants} className="project-card reveal visible">
         <h3 className="project-name">Marketing</h3>
         <p className="project-desc">Brand strategy, digital growth, and creative campaigns.</p>
-        <Link href="/marketing" className="cmd-btn">
+        <Link href="/marketing" className="cmd-btn" style={{ display: 'inline-block', marginTop: '16px' }}>
           Explore Marketing
         </Link>
       </motion.article>
 
       {/* AI & Tech Persona */}
-      <motion.article variants={cardVariants} className="project-card glass-card">
+      <motion.article variants={cardVariants} className="project-card reveal visible">
         <h3 className="project-name">AI & Tech</h3>
         <p className="project-desc">AI agents, automation, and tech innovation.</p>
-        <Link href="/ai" className="cmd-btn">
+        <Link href="/ai" className="cmd-btn" style={{ display: 'inline-block', marginTop: '16px' }}>
           Explore AI & Tech
         </Link>
       </motion.article>
