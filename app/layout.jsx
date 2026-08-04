@@ -42,8 +42,6 @@ export default async function RootLayout({ children }) {
   // Process CSS variables and fonts
   let customStyle = '';
   let fontLinks = [];
-  let seoTitle = metadata.title;
-  let seoDesc = metadata.description;
 
   // Enforce correct accent colors, ignoring generic blue from CMS if present
   let finalAccentLight = '#1E7F8C';
