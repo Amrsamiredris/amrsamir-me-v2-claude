@@ -51,8 +51,8 @@ export async function middleware(request) {
     return NextResponse.redirect(url)
   }
 
-  // Lock down the entire site: redirect all public subpages to the Coming Soon home page (/)
-  const publicLockedPaths = ['/events', '/marketing', '/ai', '/cv'];
+  // Lock down the CV route permanently.
+  const publicLockedPaths = ['/cv'];
   if (publicLockedPaths.some(p => request.nextUrl.pathname.startsWith(p))) {
     const url = request.nextUrl.clone()
     url.pathname = '/'

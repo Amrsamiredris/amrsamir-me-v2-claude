@@ -1,13 +1,23 @@
 import { supabase } from '../src/supabaseClient';
 import '../src/css/style.css'; // Global CSS
 
-import BackgroundCanvas from '../components/BackgroundCanvas';
-import WatermarkBg from '../components/WatermarkBg';
 import CommandPalette from '../components/CommandPalette';
+import ThemeToggle from '../components/ThemeToggle';
+import BackgroundAnimation from '../components/BackgroundAnimation';
 
 export const metadata = {
   title: 'Amr Samir Edris',
   description: 'Building innovative experiences across Events, Marketing, and AI Tech.',
+  icons: {
+    icon: [
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' }
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
+    ],
+  },
+  manifest: '/site.webmanifest',
 };
 
 export const revalidate = 60; // Revalidate every 60 seconds (Incremental Static Regeneration)
@@ -35,6 +45,10 @@ export default async function RootLayout({ children }) {
   let seoTitle = metadata.title;
   let seoDesc = metadata.description;
 
+  // Enforce correct accent colors, ignoring generic blue from CMS if present
+  let finalAccentLight = '#1E7F8C';
+  let finalAccentDark = '#3FB8C4';
+  
   cmsData.forEach((item) => {
     if (item.type === 'font' && item.value) {
       const fontName = item.value;
@@ -48,21 +62,38 @@ export default async function RootLayout({ children }) {
       }
     } else if (item.type === 'color') {
       if (item.key === 'color_accent') {
-        customStyle += `--primary-accent: ${item.value};\n`;
-        customStyle += `--accent-glow: ${item.value}40;\n`;
+        // If CMS has a generic blue or something unintended, we still enforce the spec'd teal
+        // Otherwise use the CMS value if it's meant to be dynamic, but since we are correcting it:
+        if (item.value !== '#0070f3' && item.value !== 'blue' && item.value !== '#1E7F8C') {
+           finalAccentLight = item.value; // Trust CMS if it's a completely different custom color
+        }
       }
-    } else if (item.key === 'seo_title') {
-      seoTitle = item.value;
-    } else if (item.key === 'seo_description') {
-      seoDesc = item.value;
     }
   });
 
+  // Inject the final accent colors
+  customStyle += `--primary-accent: ${finalAccentLight};\n`;
+  customStyle += `--accent-glow: ${finalAccentLight}40;\n`;
+  customStyle += `--primary-accent-dark: ${finalAccentDark};\n`;
+  customStyle += `--accent-glow-dark: ${finalAccentDark}40;\n`;
+
+  // Theme Init Script (Blocking FOUC)
+  const themeScript = `
+    (function() {
+      try {
+        var localTheme = localStorage.getItem('theme');
+        var sysTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (localTheme === 'dark' || (!localTheme && sysTheme)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+    })();
+  `;
+
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
-        <title>{seoTitle}</title>
-        <meta name="description" content={seoDesc} />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         {fontLinks.map((url, i) => (
           <link key={i} href={url} rel="stylesheet" />
         ))}
@@ -71,8 +102,8 @@ export default async function RootLayout({ children }) {
         )}
       </head>
       <body>
-        <BackgroundCanvas />
-        
+        <ThemeToggle />
+        <BackgroundAnimation />
         {/* Navigation Hidden for Coming Soon */}
 
         {children}

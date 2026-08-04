@@ -79,6 +79,9 @@ export default function Footer({ settingsData }) {
           </form>
         </div>
       </div>
+      <div className="container">
+        <span className="surf-divider"></span>
+      </div>
       <div className="container footer-bottom">
         <p>&copy; {new Date().getFullYear()} Amr Samir Edris. All rights reserved.</p>
       </div>
