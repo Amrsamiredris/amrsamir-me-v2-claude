@@ -1,6 +1,8 @@
 import Footer from '../../components/Footer';
 import { supabase } from '../../src/supabaseClient';
 
+import AnimatedDivider from '../../components/AnimatedDivider';
+
 export const metadata = {
   title: 'Marketing | Amr Samir Edris',
   description: 'Brand strategy, digital growth, and creative campaigns.',
@@ -107,8 +109,8 @@ export default async function MarketingPage() {
             </article>
 
             <div style={{ padding: '24px', border: '1px dashed var(--border-strong)', borderRadius: 'var(--radius-md)', textAlign: 'center', background: 'var(--bg-secondary)', gridColumn: '1 / -1' }}>
-              <span className="surf-divider" style={{ margin: '0 auto 16px auto' }}></span>
-              <p style={{ color: 'var(--text-muted)', fontSize: 'var(--text-sm)', fontWeight: 500, letterSpacing: '0.05em', textTransform: 'uppercase' }}>Case Studies In Progress</p>
+              <AnimatedDivider style={{ margin: '0 auto 16px auto' }} />
+              <p style={{ color: 'var(--text-muted)', fontSize: 'var(--text-sm)', fontWeight: 500, letterSpacing: '0.05em', textTransform: 'uppercase' }}>Campaigns In Progress</p>
               <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', marginTop: '8px' }}>Detailed project outcomes and performance metrics are currently being compiled.</p>
             </div>
 

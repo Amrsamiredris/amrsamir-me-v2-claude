@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { supabase } from '../src/supabaseClient';
+import AnimatedDivider from './AnimatedDivider';
 
 export default function Footer({ settingsData }) {
   const [loading, setLoading] = useState(false);
@@ -118,7 +119,7 @@ export default function Footer({ settingsData }) {
         </div>
       </div>
       <div className="container">
-        <span className="surf-divider"></span>
+        <AnimatedDivider />
       </div>
       <div className="container footer-bottom">
         <p>&copy; {new Date().getFullYear()} Amr Samir Edris. All rights reserved.</p>

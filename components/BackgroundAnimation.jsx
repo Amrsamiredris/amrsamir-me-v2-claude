@@ -86,8 +86,13 @@ export default function BackgroundAnimation() {
         .bg-motion-layer {
           position: absolute;
           inset: 0;
-          filter: blur(80px);
+          filter: blur(120px);
+          opacity: 0.3;
+          mix-blend-mode: multiply;
+        }
+        :global([data-theme="dark"]) .bg-motion-layer {
           opacity: 0.4;
+          mix-blend-mode: screen;
         }
 
         .motion-shapes {
@@ -96,37 +101,37 @@ export default function BackgroundAnimation() {
         }
 
         .shape-1 {
-          animation: drift1 40s infinite alternate ease-in-out;
+          animation: drift1 15s infinite alternate ease-in-out;
           transform-origin: center;
         }
 
         .shape-2 {
-          animation: drift2 55s infinite alternate ease-in-out;
+          animation: drift2 20s infinite alternate ease-in-out;
           transform-origin: center;
         }
 
         .shape-3 {
-          animation: drift3 45s infinite alternate ease-in-out;
+          animation: drift3 18s infinite alternate ease-in-out;
           transform-origin: center;
         }
 
         @keyframes drift1 {
           0% { transform: translate(0%, 0%) scale(1); }
-          100% { transform: translate(30%, 40%) scale(1.2); }
+          100% { transform: translate(30%, 40%) scale(1.5); }
         }
 
         @keyframes drift2 {
           0% { transform: translate(0%, 0%) scale(1); }
-          100% { transform: translate(-40%, -20%) scale(0.8); }
+          100% { transform: translate(-40%, -20%) scale(0.6); }
         }
 
         @keyframes drift3 {
           0% { transform: translate(0%, 0%) rotate(0deg); }
-          100% { transform: translate(20%, -30%) rotate(45deg); }
+          100% { transform: translate(20%, -30%) rotate(90deg); }
         }
 
         .wave-line-drift {
-          animation: driftWave 25s infinite linear;
+          animation: driftWave 12s infinite linear;
           transform-origin: center;
         }
 

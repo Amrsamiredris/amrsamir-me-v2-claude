@@ -2,6 +2,7 @@ import { supabase } from '../src/supabaseClient';
 import Footer from '../components/Footer';
 import PersonaCards from '../components/PersonaCards';
 import AnimatedLogo from '../components/AnimatedLogo';
+import AnimatedDivider from '../components/AnimatedDivider';
 
 export const revalidate = 60;
 
@@ -64,7 +65,7 @@ export default async function Home() {
         {showNewsletter && (
           <section className="section" id="newsletter" style={{ marginTop: 'auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-               <span className="surf-divider" style={{ margin: '0 auto 16px auto' }}></span>
+               <AnimatedDivider style={{ margin: '0 auto 16px auto' }} />
                <h2 className="section-title">Newsletter</h2>
             </div>
             <div className="contact-form" style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

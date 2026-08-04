@@ -233,15 +233,4 @@
 }
 
 /* Surf Dividers */
-.surf-divider {
-  display: block;
-  width: 60px;
-  height: 12px;
-  margin: 40px auto;
-  background-image: url('data:image/svg+xml;utf8,<svg width="60" height="12" viewBox="0 0 60 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 6 Q 15 0, 30 6 T 60 6" stroke="%231E7F8C" stroke-width="1" fill="none"/></svg>');
-  background-repeat: no-repeat;
-  background-position: center;
-}
-[data-theme="dark"] .surf-divider {
-  background-image: url('data:image/svg+xml;utf8,<svg width="60" height="12" viewBox="0 0 60 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 6 Q 15 0, 30 6 T 60 6" stroke="%233FB8C4" stroke-width="1" fill="none"/></svg>');
-}
+/* Replaced by AnimatedDivider component */
