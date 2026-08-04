@@ -1,6 +1,7 @@
 import { supabase } from '../src/supabaseClient';
 import Footer from '../components/Footer';
 import PersonaCards from '../components/PersonaCards';
+import AnimatedLogo from '../components/AnimatedLogo';
 
 export const revalidate = 60;
 
@@ -28,24 +29,23 @@ export default async function Home() {
 
   return (
     <>
-      <main id="main-content" className="container" style={{ position: 'relative', zIndex: 10, paddingBottom: '40px' }}>
+      <main id="main-content" className="container" style={{ position: 'relative', zIndex: 10, paddingBottom: '40px', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         
-        <section className="hero">
-          <div className="hero-grid">
-            <div className="hero-content">
-              <h1 className="hero-subtitle" dangerouslySetInnerHTML={{ __html: getCms('hero_title', 'Amr Samir Edris').replace(/\\n/g, '<br>') }} />
-              <p className="hero-desc" dangerouslySetInnerHTML={{ __html: getCms('hero_subtitle', 'Select a persona below to explore.').replace(/\\n/g, '<br>') }} />
-            </div>
-          </div>
+        <section className="hero" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', minHeight: '40vh', marginTop: '10vh' }}>
+          
+          <AnimatedLogo />
+
+          <h1 className="hero-subtitle" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontFamily: 'var(--font-mono)', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '1rem', letterSpacing: '-0.03em' }} dangerouslySetInnerHTML={{ __html: getCms('hero_title', 'Amr Samir Edris').replace(/\\n/g, '<br>') }} />
+          <p className="hero-desc" style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto' }} dangerouslySetInnerHTML={{ __html: getCms('hero_subtitle', 'Select a persona below to explore.').replace(/\\n/g, '<br>') }} />
         </section>
 
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section" style={{ paddingTop: '40px', flex: 1 }}>
           <PersonaCards />
         </section>
 
         {/* Newsletter Section */}
         {showNewsletter && (
-          <section className="section" id="newsletter">
+          <section className="section" id="newsletter" style={{ marginTop: 'auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '32px' }}>
                <span className="surf-divider" style={{ margin: '0 auto 16px auto' }}></span>
                <h2 className="section-title">Newsletter</h2>
