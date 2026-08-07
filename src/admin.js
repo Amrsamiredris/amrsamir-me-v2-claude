@@ -32,10 +32,6 @@ async function loadExistingPdfs() {
 // DOM Elements
 const loginSection = document.getElementById('login-section');
 const dashboardSection = document.getElementById('dashboard-section');
-const loginForm = document.getElementById('login-form');
-const loginError = document.getElementById('login-error');
-const loginBtn = document.getElementById('login-btn');
-const loginLoader = document.getElementById('login-loader');
 const logoutBtn = document.getElementById('logout-btn');
 const userEmailSpan = document.getElementById('user-email');
 
@@ -104,34 +100,17 @@ async function init() {
 }
 
 // Authentication
-loginForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  
-  loginBtn.querySelector('span').classList.add('hidden');
-  loginLoader.classList.remove('hidden');
-  loginError.classList.add('hidden');
-
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-  loginBtn.querySelector('span').classList.remove('hidden');
-  loginLoader.classList.add('hidden');
-
-  if (error) {
-    loginError.textContent = error.message;
-    loginError.classList.remove('hidden');
-  }
-});
-
-logoutBtn.addEventListener('click', async () => {
-  await supabase.auth.signOut();
-});
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', async () => {
+    await supabase.auth.signOut();
+  });
+}
 
 // UI State Management
 function showLogin() {
-  dashboardSection.classList.add('hidden');
-  loginSection.classList.remove('hidden');
+  if (window.location.pathname !== '/login') {
+    window.location.href = '/login';
+  }
 }
 
 function showDashboard(user) {

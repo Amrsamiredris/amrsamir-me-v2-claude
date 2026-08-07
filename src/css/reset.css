@@ -25,12 +25,6 @@ body {
   max-width: 100vw;
 }
 
-@media (pointer: fine) {
-  body, a, button, input, textarea, select {
-    cursor: none !important;
-  }
-}
-
 a {
   color: inherit;
   text-decoration: none;
