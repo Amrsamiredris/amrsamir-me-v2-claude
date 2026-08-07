@@ -5,6 +5,9 @@ import CommandPalette from '../components/CommandPalette';
 import ThemeToggle from '../components/ThemeToggle';
 import BackgroundAnimation from '../components/BackgroundAnimation';
 import Navigation from '../components/Navigation';
+import { PHProvider } from '../components/Providers';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import { Inter, Space_Grotesk } from 'next/font/google';
 
@@ -66,23 +69,36 @@ export default async function RootLayout({ children }) {
     })();
   `;
 
+  // Microsoft Clarity Init Script (Checking env var for ID)
+  const clarityScript = `
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "${process.env.NEXT_PUBLIC_CLARITY_ID || 'dummy_clarity_id'}");
+  `;
+
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: clarityScript }} />
         {customStyle && (
           <style dangerouslySetInnerHTML={{ __html: `:root { \n${customStyle}\n}` }} />
         )}
       </head>
       <body>
-        <ThemeToggle />
-        <BackgroundAnimation />
-        <Navigation />
+        <PHProvider>
+          <ThemeToggle />
+          <BackgroundAnimation />
+          <Navigation />
 
-        {children}
+          {children}
 
-        <CommandPalette />
-
+          <CommandPalette />
+          <Analytics />
+          <SpeedInsights />
+        </PHProvider>
       </body>
     </html>
   );

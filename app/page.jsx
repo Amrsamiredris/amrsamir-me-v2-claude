@@ -3,6 +3,7 @@ import Footer from '../components/Footer';
 import PersonaCards from '../components/PersonaCards';
 import AnimatedLogo from '../components/AnimatedLogo';
 import AnimatedDivider from '../components/AnimatedDivider';
+import SubstackForm from '../components/SubstackForm';
 
 export const revalidate = 60;
 
@@ -70,18 +71,7 @@ export default async function Home() {
                <h2 className="section-title">Newsletter</h2>
             </div>
             <div className="contact-form" style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <p style={{ color: 'var(--text-secondary)', marginBottom: '32px' }}>Subscribe to my Substack newsletter to get updates across Events, Marketing, and Tech.</p>
-              
-              <div style={{ width: '100%', padding: '16px', borderRadius: 'var(--radius-lg)', border: '1px dashed var(--border-strong)', background: 'var(--bg-secondary)' }}>
-                <iframe 
-                  src={`${settingsData?.substack || 'https://amrsamiredris.substack.com'}/embed?transparent=1`} 
-                  width="100%" 
-                  height="320" 
-                  style={{ border: 0, background: 'transparent', maxWidth: '480px' }} 
-                  frameBorder="0" 
-                  scrolling="no">
-                </iframe>
-              </div>
+              <SubstackForm />
             </div>
           </section>
         )}

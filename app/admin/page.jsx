@@ -17,11 +17,11 @@ export default function AdminPage() {
   }, []);
 
   return (
-    <div data-theme="classic-black" style={{ minHeight: '100vh', width: '100vw', background: 'var(--bg-primary)' }}>
-      {/* Abstract Background */}
-      <div className="bg-shape shape1"></div>
-      <div className="bg-shape shape2"></div>
-      <div className="bg-shape shape3"></div>
+    <div style={{ minHeight: '100vh', width: '100vw', background: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
+      {/* Abstract Background for Admin to match site */}
+      <div className="bg-shape shape1" style={{ opacity: 0.5 }}></div>
+      <div className="bg-shape shape2" style={{ opacity: 0.5 }}></div>
+      <div className="bg-shape shape3" style={{ opacity: 0.5 }}></div>
 
       <div id="app" dangerouslySetInnerHTML={{ __html: `
         <!-- Login Section (Moved to /login, kept as empty div to prevent JS errors) -->
@@ -32,9 +32,9 @@ export default function AdminPage() {
           
           <!-- Sidebar -->
           <aside class="sidebar glass-panel">
-            <div class="sidebar-header">
+            <div class="sidebar-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 16px;">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-              <h3>Admin Panel</h3>
+              <h3 style="font-family: var(--font-sans); color: var(--text-primary);">Admin Panel</h3>
             </div>
             
             <nav class="sidebar-nav">

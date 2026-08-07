@@ -3,6 +3,7 @@ import { supabase } from '../../src/supabaseClient';
 
 import AnimatedDivider from '../../components/AnimatedDivider';
 import ContactForm from '../../components/ContactForm';
+import BookingModal from '../../components/BookingModal';
 
 export const metadata = {
   title: 'Marketing | Amr Samir Edris',
@@ -170,6 +171,10 @@ export default async function MarketingPage() {
               <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-semibold)', marginBottom: '16px', color: 'var(--text-primary)' }}>Send a Message</h3>
               <ContactForm />
             </div>
+          </div>
+
+          <div style={{ marginTop: '32px' }}>
+            <BookingModal />
           </div>
         </section>
 
