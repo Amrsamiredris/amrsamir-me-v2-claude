@@ -4,7 +4,7 @@ import PersonaCards from '../components/PersonaCards';
 import AnimatedLogo from '../components/AnimatedLogo';
 import AnimatedDivider from '../components/AnimatedDivider';
 import SubstackForm from '../components/SubstackForm';
-import Hero3D from '../components/Hero3D';
+import Hero3DWrapper from '../components/Hero3DWrapper';
 
 export const revalidate = 60;
 
@@ -34,8 +34,9 @@ export default async function Home() {
     <>
       <main id="main-content" className="container" style={{ position: 'relative', zIndex: 10, paddingBottom: '40px', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         
+        <Hero3DWrapper />
+
         <section className="hero" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', minHeight: '40vh', marginTop: '10vh', position: 'relative' }}>
-          <Hero3D />
           <AnimatedLogo />
 
           <h1 className="hero-subtitle" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontFamily: 'var(--font-mono)', fontWeight: 500, color: 'var(--ink)', marginBottom: '1rem', letterSpacing: '-0.03em' }} dangerouslySetInnerHTML={{ __html: getCms('hero_title', 'Amr Samir Edris').replace(/\\n/g, '<br>') }} />

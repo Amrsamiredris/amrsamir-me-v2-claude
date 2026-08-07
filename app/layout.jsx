@@ -8,6 +8,7 @@ import Navigation from '../components/Navigation';
 import { PHProvider } from '../components/Providers';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import Script from 'next/script';
 
 import { Inter, Space_Grotesk } from 'next/font/google';
 
@@ -82,7 +83,7 @@ export default async function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        <script dangerouslySetInnerHTML={{ __html: clarityScript }} />
+        <Script id="ms-clarity" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: clarityScript }} />
         {customStyle && (
           <style dangerouslySetInnerHTML={{ __html: `:root { \n${customStyle}\n}` }} />
         )}

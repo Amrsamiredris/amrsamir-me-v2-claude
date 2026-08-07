@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 
 export default function MediaGallery() {
   const dummyImages = [
@@ -29,14 +30,19 @@ export default function MediaGallery() {
             borderRadius: 'var(--radius-md)', 
             overflow: 'hidden',
             border: '1px solid var(--border-subtle)',
-            background: 'var(--bg-secondary)'
+            background: 'var(--bg-secondary)',
+            display: 'flex',
+            flexDirection: 'column'
           }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
-              src={img.src} 
-              alt={img.title}
-              style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }}
-            />
+            <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9' }}>
+              <Image 
+                src={img.src} 
+                alt={img.title}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                style={{ objectFit: 'cover' }}
+              />
+            </div>
             <div style={{ padding: '12px' }}>
               <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{img.title}</p>
             </div>
