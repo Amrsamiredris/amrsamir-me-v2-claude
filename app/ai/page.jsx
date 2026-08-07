@@ -1,6 +1,7 @@
 import Footer from '../../components/Footer';
 import { supabase } from '../../src/supabaseClient';
 import AnimatedDivider from '../../components/AnimatedDivider';
+import ContactForm from '../../components/ContactForm';
 
 export const metadata = {
   title: 'AI & Tech | Amr Samir Edris',
@@ -106,7 +107,7 @@ export default async function AIPage() {
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                   Email:
                 </span>
-                <span className="cl-value">contact@amrsamir.me</span>
+                <span className="cl-value" style={{ color: 'var(--text-muted)', fontSize: 'var(--text-sm)', fontWeight: 'normal' }}>contact@amrsamir.me</span>
               </a>
               <a href="https://wa.me/971507095867" target="_blank" rel="noopener noreferrer" className="contact-link-item">
                 <span className="cl-label">
@@ -117,8 +118,9 @@ export default async function AIPage() {
               </a>
             </div>
             
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <p style={{ color: 'var(--text-muted)' }}>Or use the form in the footer below.</p>
+            <div>
+              <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-semibold)', marginBottom: '16px', color: 'var(--text-primary)' }}>Send a Message</h3>
+              <ContactForm />
             </div>
           </div>
         </section>
