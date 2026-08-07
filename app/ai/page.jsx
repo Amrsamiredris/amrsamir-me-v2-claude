@@ -3,6 +3,7 @@ import { supabase } from '../../src/supabaseClient';
 import AnimatedDivider from '../../components/AnimatedDivider';
 import ContactForm from '../../components/ContactForm';
 import BookingModal from '../../components/BookingModal';
+import AnimatedCounter from '../../components/AnimatedCounter';
 
 export const metadata = {
   title: 'AI & Tech | Amr Samir Edris',
@@ -69,6 +70,28 @@ export default async function AIPage() {
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+        </section>
+
+        <section className="section" id="stats">
+          <h2 className="section-title">Technical Expertise</h2>
+          <div className="stats-grid reveal visible">
+            <div className="stat-item">
+              <span className="stat-number"><AnimatedCounter value={5} suffix="+" /></span>
+              <span className="stat-label">AI Platforms Mastered</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number"><AnimatedCounter value={3} /></span>
+              <span className="stat-label">Custom LLMs Deployed</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number"><AnimatedCounter value={100} suffix="+" /></span>
+              <span className="stat-label">Prompts Engineered</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number"><AnimatedCounter value={10} suffix="x" /></span>
+              <span className="stat-label">Workflow Acceleration</span>
             </div>
           </div>
         </section>

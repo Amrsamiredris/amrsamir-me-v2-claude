@@ -6,6 +6,7 @@ import AnimatedDivider from '../../components/AnimatedDivider';
 import ContactForm from '../../components/ContactForm';
 import BookingModal from '../../components/BookingModal';
 import MediaGallery from '../../components/MediaGallery';
+import AnimatedCounter from '../../components/AnimatedCounter';
 
 export const metadata = {
   title: 'Events - Amr Samir Edris',
@@ -150,23 +151,23 @@ export default async function EventsPage() {
           <h2 className="section-title">Experience & Stats</h2>
           <div className="stats-grid reveal visible">
             <div className="stat-item">
-              <span className="stat-number">5+</span>
+              <span className="stat-number"><AnimatedCounter value={5} suffix="+" /></span>
               <span className="stat-label">Years Experience</span>
             </div>
             <div className="stat-item">
-              <span className="stat-number">20+</span>
+              <span className="stat-number"><AnimatedCounter value={20} suffix="+" /></span>
               <span className="stat-label">Major Events</span>
             </div>
             <div className="stat-item">
-              <span className="stat-number">100+</span>
+              <span className="stat-number"><AnimatedCounter value={100} suffix="+" /></span>
               <span className="stat-label">Live Productions</span>
             </div>
             <div className="stat-item">
-              <span className="stat-number">$10M+</span>
+              <span className="stat-number"><AnimatedCounter value={10} prefix="$" suffix="M+" /></span>
               <span className="stat-label">Budgets Managed</span>
             </div>
             <div className="stat-item">
-              <span className="stat-number">4</span>
+              <span className="stat-number"><AnimatedCounter value={4} /></span>
               <span className="stat-label">Countries</span>
             </div>
           </div>

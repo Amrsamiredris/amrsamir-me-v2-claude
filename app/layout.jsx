@@ -5,6 +5,7 @@ import CommandPalette from '../components/CommandPalette';
 import ThemeToggle from '../components/ThemeToggle';
 import BackgroundAnimation from '../components/BackgroundAnimation';
 import Navigation from '../components/Navigation';
+import CustomCursor from '../components/CustomCursor';
 import { PHProvider } from '../components/Providers';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -88,6 +89,7 @@ export default async function RootLayout({ children }) {
         )}
       </head>
       <body>
+        <CustomCursor />
         <PHProvider>
           <ThemeToggle />
           <BackgroundAnimation />

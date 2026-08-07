@@ -4,6 +4,7 @@ import { supabase } from '../../src/supabaseClient';
 import AnimatedDivider from '../../components/AnimatedDivider';
 import ContactForm from '../../components/ContactForm';
 import BookingModal from '../../components/BookingModal';
+import AnimatedCounter from '../../components/AnimatedCounter';
 
 export const metadata = {
   title: 'Marketing | Amr Samir Edris',
@@ -116,6 +117,28 @@ export default async function MarketingPage() {
               <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', marginTop: '8px' }}>Detailed project outcomes and performance metrics are currently being compiled.</p>
             </div>
 
+          </div>
+        </section>
+
+        <section className="section" id="stats">
+          <h2 className="section-title">Impact & Reach</h2>
+          <div className="stats-grid reveal visible">
+            <div className="stat-item">
+              <span className="stat-number"><AnimatedCounter value={1.5} suffix="M+" /></span>
+              <span className="stat-label">Digital Impressions</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number"><AnimatedCounter value={500} suffix="K+" /></span>
+              <span className="stat-label">Event Registrations</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number"><AnimatedCounter value={300} suffix="%" /></span>
+              <span className="stat-label">Avg. Engagement Boost</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number"><AnimatedCounter value={50} suffix="+" /></span>
+              <span className="stat-label">Brand Activations</span>
+            </div>
           </div>
         </section>
 
