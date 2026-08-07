@@ -2,11 +2,13 @@
 
 export default function MediaGallery() {
   const dummyImages = [
-    { id: 1, src: 'https://via.placeholder.com/600x400/1e293b/94a3b8?text=Event+Stage', title: 'Main Stage' },
-    { id: 2, src: 'https://via.placeholder.com/400x600/1e293b/94a3b8?text=Crowd', title: 'Crowd' },
-    { id: 3, src: 'https://via.placeholder.com/600x800/1e293b/94a3b8?text=Backstage', title: 'Backstage' },
-    { id: 4, src: 'https://via.placeholder.com/800x600/1e293b/94a3b8?text=VIP+Lounge', title: 'VIP Lounge' },
-    { id: 5, src: 'https://via.placeholder.com/400x400/1e293b/94a3b8?text=Production', title: 'Production Desk' },
+    { id: 1, src: '/images/gallery/stage_management_1786130864071.jpg', title: 'Stage Production' },
+    { id: 2, src: '/images/gallery/crowd_management_1786130873883.jpg', title: 'Crowd Management' },
+    { id: 3, src: '/images/gallery/backstage_management_1786130884576.jpg', title: 'Backstage Operations' },
+    { id: 4, src: '/images/gallery/back_of_house_1786130894232.jpg', title: 'Back of House / Control Room' },
+    { id: 5, src: '/images/gallery/summer_festival_1786130931967.jpg', title: 'Summer Festival' },
+    { id: 6, src: '/images/gallery/concert_management_1786130943537.jpg', title: 'Concerts & Arena Tours' },
+    { id: 7, src: '/images/gallery/corporate_conference_1786130953485.jpg', title: 'Corporate Conferences' },
   ];
 
   return (
