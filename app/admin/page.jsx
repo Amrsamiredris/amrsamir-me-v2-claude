@@ -31,7 +31,7 @@ export default function AdminPage() {
         <div id="dashboard-section" class="dashboard-layout hidden">
           
           <!-- Sidebar -->
-          <aside class="sidebar glass-panel">
+          <aside class="sidebar">
             <div class="sidebar-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 16px;">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
               <h3 style="font-family: var(--font-sans); color: var(--text-primary);">Admin Panel</h3>
