@@ -58,6 +58,7 @@ export default async function Home() {
         `}} />
 
         <section className="section" style={{ paddingTop: '40px', flex: 1 }}>
+          <h2 style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', borderWidth: 0 }}>Personas</h2>
           <PersonaCards />
         </section>
 

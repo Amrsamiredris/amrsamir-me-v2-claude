@@ -64,7 +64,7 @@ export default function Footer({ settingsData }) {
         .marquee-content span {
           font-family: var(--font-mono);
           font-size: 0.85rem;
-          color: var(--text-secondary);
+          color: var(--text-primary);
           padding: 0 16px;
         }
         @keyframes scrollMarquee {

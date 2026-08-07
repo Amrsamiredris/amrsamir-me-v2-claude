@@ -6,7 +6,7 @@ import { supabase } from './supabaseClient.js';
 import posthog from 'posthog-js';
 
 // Correct version:
-posthog.init(import.meta.env.VITE_POSTHOG_KEY, {
+posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
     api_host: 'https://us.i.posthog.com',
     person_profiles: 'identified_only',
 });
