@@ -4,6 +4,7 @@ import '../src/css/style.css'; // Global CSS
 import CommandPalette from '../components/CommandPalette';
 import ThemeToggle from '../components/ThemeToggle';
 import BackgroundAnimation from '../components/BackgroundAnimation';
+import Navigation from '../components/Navigation';
 
 import { Inter, Space_Grotesk } from 'next/font/google';
 
@@ -76,7 +77,7 @@ export default async function RootLayout({ children }) {
       <body>
         <ThemeToggle />
         <BackgroundAnimation />
-        {/* Navigation Hidden for Coming Soon */}
+        <Navigation />
 
         {children}
 
