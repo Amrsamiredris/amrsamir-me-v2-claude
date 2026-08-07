@@ -83,7 +83,7 @@
   color: var(--bg-primary);
   border-color: var(--text-primary);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px var(--border-strong);
 }
 
 .footer-social-btn.icon-only {
@@ -183,7 +183,7 @@
 .mini-form button:hover { 
   transform: translateY(-2px);
   opacity: 0.9;
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 12px var(--border-active);
 }
 
 .footer-bottom {

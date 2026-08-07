@@ -5,7 +5,7 @@
   /* Surf-Minimal Design System */
   --ink: #0B1220;
   --paper: #F6F3EC;
-  --muted: #6B7280;
+  --muted: #4B5563; /* Improved contrast gray */
   --line: #D8D3C4;
   
   --bg-primary: var(--paper);
